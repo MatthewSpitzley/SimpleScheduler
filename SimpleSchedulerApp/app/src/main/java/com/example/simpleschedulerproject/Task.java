@@ -96,9 +96,20 @@ public class Task {
 }
 
 enum Recur {
-    Daily,
-    Weekdays,
-    Weekly,
-    Monthly,
-    Yearly
+    DAILY("Daily"),
+    WEEKDAYS("Weekdays"),
+    WEEKLY("Weekly"),
+    MONTHLY("Monthly"),
+    YEARLY("Yearly");
+
+    private final String recur;
+
+    Recur(String recur) {
+        this.recur = recur;
+    }
+
+    @Override
+    public String toString() {
+        return recur;
+    }
 }
