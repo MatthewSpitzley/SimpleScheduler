@@ -1,4 +1,4 @@
-package main.java.com.example.simpleschedulerproject;
+package com.example.simpleschedulerproject;
 
 public class Category {
     private String name;
