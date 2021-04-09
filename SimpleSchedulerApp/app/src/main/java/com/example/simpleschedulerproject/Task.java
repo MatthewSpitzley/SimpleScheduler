@@ -83,15 +83,14 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "name='" + name + '\'' +
-                ", category=" + category +
-                ", time=" + time +
-                ", recur=" + recur +
-                ", email=" + email +
-                ", push=" + push +
-                ", complete=" + complete +
-                '}';
+        return name +
+                ": category =" + category.toString() +
+                ", time =" + time.toString() +
+                ", recur =" + recur.toString() +
+                ", email =" + email.toString() +
+                ", push =" + push.toString() +
+                ", complete =" + complete +
+                '.';
     }
 }
 
