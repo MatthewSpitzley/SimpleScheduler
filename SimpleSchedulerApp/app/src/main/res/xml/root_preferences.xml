@@ -7,7 +7,7 @@
             app:summary="@string/hour_choices"
             app:defaultValue="false"
             />
-
+        <!--
         <ListPreference
             app:defaultValue="reply"
             app:entries="@array/reply_entries"
@@ -29,7 +29,7 @@
             app:key="attachment"
             app:summaryOff="@string/attachment_summary_off"
             app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+            app:title="@string/attachment_title" />-->
 
     </PreferenceCategory>
 
