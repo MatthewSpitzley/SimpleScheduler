@@ -1,6 +1,7 @@
 package com.example.simpleschedulerproject;
 
 import java.time.ZonedDateTime;
+import java.util.prefs.Preferences;
 
 public class Task {
     private String name;
@@ -10,6 +11,7 @@ public class Task {
     private ZonedDateTime email;
     private ZonedDateTime push;
     private boolean complete;
+    private Settings settings;
 
     public Task(String name, Category category, ZonedDateTime time, Recur recur, ZonedDateTime email, ZonedDateTime push, boolean complete) {
         this.name = name;
@@ -83,9 +85,10 @@ public class Task {
 
     @Override
     public String toString() {
+        int x = 0;
         return name +
                 ": category =" + category.toString() +
-                ", time =" + time.toString() +
+                ", time =" + time.format(settings.dateDisplay(Preferences.userRoot().getInt("DateChoices", x))) +
                 ", recur =" + recur.toString() +
                 ", email =" + email.toString() +
                 ", push =" + push.toString() +

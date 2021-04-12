@@ -1,36 +1,69 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <PreferenceCategory app:title="Display">
-        <SwitchPreference
-            app:key="12 or 24 Hour time?"
-            app:title="12 or 24 Hour time?"
-            app:summary="@string/hour_choices"
-            app:defaultValue="false"
+    <PreferenceCategory app:title="@string/help">
+        <Preference
+            app:key="help"
+            app:title="Need help navigating the app?"
             />
-        <!--
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
-
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
+    <PreferenceCategory app:title="Display">
+        <!-- 12 or 24 hour time -->
+        <SwitchPreference
+            app:key="MainScreen"
+            app:title="Should the Task List or the Calendar be the starting screen?"
+            app:defaultValue="false"
+            app:summaryOff="Task List"
+            app:summaryOn="Calendar"
+            />
+        <!-- 12 or 24 hour time -->
+        <SwitchPreference
+            app:key="HourFormat"
+            app:title="12 or 24 Hour time?"
+            app:defaultValue="false"
+            app:summaryOff="12 Hour"
+            app:summaryOn="24 Hour"
+            />
+        <!-- How will dates be displayed -->
+        <ListPreference
+            app:key="DateChoices"
+            app:defaultValue="0"
+            app:title="Date Display Format"
+            app:entries="@array/date_choices"
+            app:entryValues="@array/date_choices_values"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="Notifications">
+        <SwitchPreference
+            app:key="LateNotifications"
+            app:title="Would you like to receive notifications for tasks that are late?"
+            app:defaultValue="true"
+            />
+        <ListPreference
+            app:key="NotificationTiming"
+            app:title="Late Notification Timing"
+            app:defaultValue="4"
+            app:entries="@array/notification_choices"
+            app:entryValues="@array/notification_choices_values"
+            app:summary="How much time prior would you like to receive notifications for upcoming tasks?"
+            />
 
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
+        <SwitchPreference
+            app:key="NotificationEmail"
+            app:title="Would you like to receive email notifications"
+            app:defaultValue="false"
+            />
+        <SwitchPreference
+            app:key="NotificationPush"
+            app:title="Would you like to receive push notifications"
+            app:defaultValue="false"
+            />
+    </PreferenceCategory>
 
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />-->
-
+    <PreferenceCategory app:title="@string/GoogleSignIn">
+        <Preference
+            app:key="GSignIn"
+            app:title="Google Sign In"
+            />
     </PreferenceCategory>
 
 </PreferenceScreen>
