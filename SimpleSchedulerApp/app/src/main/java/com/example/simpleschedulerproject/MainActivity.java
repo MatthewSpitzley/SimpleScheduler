@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.prefs.Preferences;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -26,15 +27,17 @@ public class MainActivity extends AppCompatActivity {
     private DBHelper mHelper;
     private ListView mTaskList;
     private ArrayAdapter<String> mAdapter;
+    private Settings settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean screen = false;
+
         setContentView(R.layout.activity_main);
 
         mHelper = new DBHelper(this);
         mTaskList = (ListView) findViewById(R.id.task_list);
-
 
         settingsBtn = findViewById(R.id.settingsButton);
 
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                         .setNegativeButton("Cancel", null)
                         .create();
                 dialog.show();
-                updateUI();
+                //updateUI();
                 return true;
 
             default:
