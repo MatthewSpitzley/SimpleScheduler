@@ -51,11 +51,12 @@ public class MainActivity extends AppCompatActivity {
 
         updateUI();
     }
+
     private void updateUI() {
         ArrayList<String> taskList = new ArrayList<>();
         SQLiteDatabase db = mHelper.getReadableDatabase();
         Cursor cursor = db.query(TaskContract.TaskEntry.TASK_TABLE,
-                new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.COLUMN_TASK_NAME},
+                new String[]{TaskContract.TaskEntry.COLUMN_TASK_NAME},
                 null, null, null, null, null);
         while (cursor.moveToNext()) {
             int idx = cursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_TASK_NAME);
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                         .create();
                 dialog.show();
                 //updateUI();
+
                 return true;
 
             default:
