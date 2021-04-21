@@ -7,16 +7,16 @@ public class TaskContract {
     public static final int DB_VERSION = 1;
 
     public class TaskEntry implements BaseColumns {
-        public static final String TASK_TABLE = "tasks";
+        public static final String TASK_TABLE = "TASK_TABLE";
 
-        public static final String COLUMN_TASK_NAME = "title";
-        public static final String COLUMN_TASK_CATEGORY = "category";
-        public static final String COLUMN_TASK_TIME = "time";
-        public static final String COLUMN_TASK_RECUR = "recur";
-        public static final String COLUMN_TASK_EMAIL_NOTIFICATION = "notification";
-        public static final String COLUMN_TASK_PUSH_NOTIFICATION = "push";
-        public static final String COLUMN_TASK_COMPLETE = "complete";
-        public static final String CATEGORY_TABLE = "cTable";
-        public static final String COLUMN_CATEGORY_NAME = "cName";
+
+        public static final String COLUMN_TASK_NAME = "COLUMN_TASK_NAME";
+        public static final String COLUMN_TASK_CATEGORY = "COLUMN_TASK_CATEGORY";
+        public static final String COLUMN_TASK_TIME = "COLUMN_TASK_TIME";
+        public static final String COLUMN_TASK_RECUR = "COLUMN_TASK_RECUR";
+        public static final String COLUMN_TASK_EMAIL_NOTIFICATION = "COLUMN_TASK_EMAIL_NOTIFICATION";
+        public static final String COLUMN_TASK_PUSH_NOTIFICATION = "COLUMN_TASK_PUSH_NOTIFICATION";
+        public static final String COLUMN_TASK_COMPLETE = "COLUMN_TASK_COMPLETE";
+
     }
 }
