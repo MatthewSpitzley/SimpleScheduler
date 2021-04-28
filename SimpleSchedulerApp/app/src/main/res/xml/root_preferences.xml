@@ -1,8 +1,9 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory app:title="@string/help">
         <Preference
-            app:key="help"
-            app:title="Need help navigating the app?"
+            app:title="Help"
+            app:key="@string/help"
+            app:summary="Need help navigating the app?"
             />
     </PreferenceCategory>
 
@@ -61,8 +62,9 @@
 
     <PreferenceCategory app:title="@string/GoogleSignIn">
         <Preference
-            app:key="GSignIn"
             app:title="Google Sign In"
+            app:key="@string/GoogleSignIn"
+            app:summary="Sign into your Google account to synchronize your data through multiple devices"
             />
     </PreferenceCategory>
 

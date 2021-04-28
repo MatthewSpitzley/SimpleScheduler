@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                         .setNegativeButton("Cancel", null)
                         .create();
                 dialog.show();
-                //updateUI();
+                updateUI();
 
                 return true;
 
