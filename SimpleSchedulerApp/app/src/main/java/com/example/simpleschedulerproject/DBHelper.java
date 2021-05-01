@@ -48,7 +48,9 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS " + CATEGORY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TASK_TABLE);
+        onCreate(db);
     }
 
     public boolean addCategory(Category category) {
@@ -81,6 +83,34 @@ public class DBHelper extends SQLiteOpenHelper {
             return false;
         else
             return true;
+    }
+
+    public boolean deleteCategory(Category category) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + CATEGORY_TABLE + " WHERE " + COLUMN_CATEGORY_NAME + " = " + category.getName();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean deleteTask(Task task) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TASK_TABLE + " WHERE " + COLUMN_TASK_NAME + " = " + task.getName();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public List<Category> getCategoryList() {
