@@ -27,6 +27,9 @@ public class Settings {
         int n = 60;
 
         switch(x) {
+            default:
+                n=0;
+                break;
             case 0:
                 n = 0;
                 break;
@@ -54,35 +57,38 @@ public class Settings {
     }
 
     //user changes how they prefer to see dates displayed
-    public DateTimeFormatter dateDisplay(int x){
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+    public String dateDisplay(int x){
+        String pattern;
         switch(x){
+            default:
+                pattern = "MM/dd/yyyy";
+                break;
             case 0:
                 //month number/day number/year number
-                df = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                pattern = "MM/dd/yyyy";
                 break;
             case 1:
                 //day number/month number/year number
-                df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                pattern = "dd/MM/yyyy";
                 break;
             case 2:
                 //abbreviated month _ day number _ year number
-                df = DateTimeFormatter.ofPattern("MMM dd yyyy");
+                pattern = "MMM dd yyyy";
                 break;
             case 3:
                 //day number _ abbreviated month _ year number
-                df = DateTimeFormatter.ofPattern("dd MMM yyyy");
+                pattern = "dd MMM yyyy";
                 break;
             case 4:
                 //full month _ day number _ year number
-                df = DateTimeFormatter.ofPattern("MMMM dd yyyy");
+                pattern = "MMMM dd yyyy";
                 break;
             case 5:
                 //day number _ full month _ year number
-                df = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+                pattern = "dd MMMM yyyy";
                 break;
         }
-        return df;
+        return pattern;
     }
 
     //user enables whether or not they want late notifications

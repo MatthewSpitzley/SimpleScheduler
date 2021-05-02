@@ -94,7 +94,7 @@ public class Task {
         int dateDisplayFormat = sharedPreferences.getInt("DateChoices", 0);
         return name +
                 ": category =" + category.toString() +
-                ", time =" + time.format(settings.dateDisplay(dateDisplayFormat)) +
+                ", time =" + time.toString() +
                 ", recur =" + recur.toString() +
                 ", email =" + email.toString() +
                 ", push =" + push.toString() +

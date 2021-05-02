@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private ImageButton settingsBtn;
-    private Button calendarBtn;
+    //private Button calendarBtn;
     private DBHelper mHelper;
     private ListView mTaskList;
     private ArrayAdapter<String> mAdapter;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         mTaskList = (ListView) findViewById(R.id.task_list);
 
         settingsBtn = findViewById(R.id.settingsButton);
-        calendarBtn = findViewById(R.id.calendarButton);
+        //calendarBtn = findViewById(R.id.calendarButton);
 
         settingsBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -50,15 +51,42 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        calendarBtn.setOnClickListener(new View.OnClickListener(){
+        /*calendarBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 Intent i = new Intent(MainActivity.this, CalendarScreen.class);
                 startActivity(i);
             }
-        });
+        });*/
 
         updateUI();
+    }
+
+    public boolean onTouchEvent(MotionEvent touchEvent){
+        float x1 = 0;
+        float x2 = 0;
+        float y1 = 0;
+        float y2 = 0;
+        switch(touchEvent.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                x1 = touchEvent.getX();
+                y1 = touchEvent.getY();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = touchEvent.getX();
+                y2 = touchEvent.getY();
+                if(x1 < x2){
+                    Intent i = new Intent(MainActivity.this, History.class);
+                    startActivity(i);
+                    finish();
+                }else if(x1 > x2){
+                    Intent i = new Intent(MainActivity.this, CalendarScreen.class);
+                    startActivity(i);
+                    finish();
+                }
+                break;
+        }
+        return false;
     }
 
     private void updateUI() {
