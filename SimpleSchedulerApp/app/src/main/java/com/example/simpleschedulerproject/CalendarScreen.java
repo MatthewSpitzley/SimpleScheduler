@@ -48,10 +48,16 @@ public class CalendarScreen extends AppCompatActivity {
         dateView = (TextView)findViewById(R.id.date_view);
         noDate = (Button)findViewById(R.id.noDate);
         settingsBtn = findViewById(R.id.settings);
-        taskListBtn = findViewById(R.id.taskList);
+        //taskListBtn = findViewById(R.id.taskList);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
-        int dateDisplayFormat = Integer.valueOf(sharedPreferences.getString("DateChoices", ""));
+        int dateDisplayFormat = 0;
+        try{
+            dateDisplayFormat = Integer.valueOf(sharedPreferences.getString("DateChoices", ""));
+        } catch(NumberFormatException e){
+            e.printStackTrace();
+        }
+        //int dateDisplayFormat = Integer.valueOf(sharedPreferences.getString("DateChoices", ""));
         DateTimeFormatter df = DateTimeFormatter.ofPattern(settings.dateDisplay(dateDisplayFormat));
         LocalDateTime ldt = LocalDateTime.now().plusDays(0);
         dateView.setText(df.format(ldt));
@@ -71,13 +77,13 @@ public class CalendarScreen extends AppCompatActivity {
             }
         });
 
-        taskListBtn.setOnClickListener(new View.OnClickListener(){
+        /*taskListBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 Intent i = new Intent(CalendarScreen.this, MainActivity.class);
                 startActivity(i);
             }
-        });
+        });*/
 
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
             @Override
@@ -102,27 +108,31 @@ public class CalendarScreen extends AppCompatActivity {
         mTextView = (TextView) findViewById(R.id.text);
 
     }
+    float xBegin;
+    float xEnd;
     public boolean onTouchEvent(MotionEvent touchEvent){
-        float x1 = 0;
-        float x2 = 0;
-        float y1 = 0;
-        float y2 = 0;
+
         switch(touchEvent.getAction()){
+            //from the moment the finger is on the screen
             case MotionEvent.ACTION_DOWN:
-                x1 = touchEvent.getX();
-                y1 = touchEvent.getY();
+                xBegin = touchEvent.getRawX();
                 break;
+            //to the moment the finger is lifted off
             case MotionEvent.ACTION_UP:
-                x2 = touchEvent.getX();
-                y2 = touchEvent.getY();
-                if(x1 < x2){
-                Intent i = new Intent(CalendarScreen.this, MainActivity.class);
-                startActivity(i);
-                finish();
-            }else if(x1 > x2){
-                Intent i = new Intent(CalendarScreen.this, History.class);
-                startActivity(i);
-                finish();
+                xEnd = touchEvent.getRawX();
+                //if the start is less than the end
+                if(xBegin < xEnd){
+                    //swipe left
+                    Intent i = new Intent(CalendarScreen.this, MainActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+                //if the start is greater than the end
+                else{
+                    //swipe right
+                    Intent i = new Intent(CalendarScreen.this, History.class);
+                    startActivity(i);
+                    finish();
             }
             break;
         }

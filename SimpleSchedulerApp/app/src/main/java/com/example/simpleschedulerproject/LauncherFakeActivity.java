@@ -21,7 +21,7 @@ public class LauncherFakeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_launcher_fake);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
-        Boolean mainLauncher = sharedPreferences.getBoolean("MainScreen", true);
+        Boolean mainLauncher = sharedPreferences.getBoolean("MainScreen", false);
         if(!mainLauncher) {
             Intent i = new Intent(LauncherFakeActivity.this, MainActivity.class);
             startActivity(i);

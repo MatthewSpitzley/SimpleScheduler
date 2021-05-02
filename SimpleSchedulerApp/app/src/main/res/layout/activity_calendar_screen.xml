@@ -31,7 +31,7 @@
     <Button
         android:id="@+id/noDate"
         android:text="Tasks with no date"
-        android:layout_marginTop = "420dp"
+        android:layout_marginTop = "54dp"
         android:gravity="center_horizontal|top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,11 +46,11 @@
         android:src="@drawable/gear"
         android:layout_alignParentEnd="true"/>
 
-    <Button
+    <!--<Button
         android:id="@+id/taskList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="54dp"420
         android:layout_centerHorizontal="true"
-        android:text="Tasks List Screen"/>
+        android:text="Tasks List Screen"/>-->
 </RelativeLayout>

@@ -62,24 +62,27 @@ public class MainActivity extends AppCompatActivity {
         updateUI();
     }
 
+    float xBegin;
+    float xEnd;
     public boolean onTouchEvent(MotionEvent touchEvent){
-        float x1 = 0;
-        float x2 = 0;
-        float y1 = 0;
-        float y2 = 0;
         switch(touchEvent.getAction()){
+            //from the moment the finger is on the screen
             case MotionEvent.ACTION_DOWN:
-                x1 = touchEvent.getX();
-                y1 = touchEvent.getY();
+                xBegin = touchEvent.getRawX();
                 break;
+            //to the moment the finger is lifted off
             case MotionEvent.ACTION_UP:
-                x2 = touchEvent.getX();
-                y2 = touchEvent.getY();
-                if(x1 < x2){
+                xEnd = touchEvent.getRawX();
+                //if the start is less than the end
+                if(xBegin < xEnd){
+                    //swipe left
                     Intent i = new Intent(MainActivity.this, History.class);
                     startActivity(i);
                     finish();
-                }else if(x1 > x2){
+                }
+                //if the start is greater than the end
+                else{
+                    //swipe right
                     Intent i = new Intent(MainActivity.this, CalendarScreen.class);
                     startActivity(i);
                     finish();
