@@ -14,8 +14,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Button;
 import android.content.Intent;
 import android.widget.ListView;
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private ImageButton settingsBtn;
+    private Button calendarBtn;
     private DBHelper mHelper;
     private ListView mTaskList;
     private ArrayAdapter<String> mAdapter;
@@ -32,19 +35,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean screen = false;
-
         setContentView(R.layout.activity_main);
 
         mHelper = new DBHelper(this);
         mTaskList = (ListView) findViewById(R.id.task_list);
 
         settingsBtn = findViewById(R.id.settingsButton);
+        calendarBtn = findViewById(R.id.calendarButton);
 
         settingsBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(i);
+            }
+        });
+        calendarBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent i = new Intent(MainActivity.this, CalendarScreen.class);
                 startActivity(i);
             }
         });

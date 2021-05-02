@@ -8,18 +8,6 @@ import java.util.Date;
 import java.time.format.DateTimeFormatter;
 
 public class Settings {
-    //opens a text box that displays a message telling the user how to navigate the application
-    public void showHelp(Activity settings){
-        TextView box = new TextView(settings.getApplicationContext());
-        box.setText("In both the task list and calendar screen, you will be able to see your various tasks and when they will be due. \n" +
-                "Each task is separated based on its category. \n" +
-                "The tasks that have already been marked as complete can be found in the History Screen, which is found by swiping left from the main screen. \n" +
-                "To create a new task, select the + button on the bottom right, and fill out any necessary fields. \n" +
-                "To access the Category List, select the drop down in the top left. \n" +
-                "\t To create a new category, continue from the Category List and select the option 'New Category' \n" +
-                "To access the Settings screen select the button in the top right");
-    }
-
     //changes between 12 and 24 hour times
     public DateTimeFormatter toggleTime(boolean x){
         DateTimeFormatter df = DateTimeFormatter.ofPattern("hh:mm aa");
@@ -32,11 +20,6 @@ public class Settings {
             df = DateTimeFormatter.ofPattern("HH:mm");
         }
         return df;
-    }
-
-    //changes the main screen to either the task list or calendar screen
-    public void switchScreen(){
-        //if true (default) do nothing, if false as the main activity launches make it redirect to the calendar screen on startup
     }
 
    //allows the user to change the time before a task occurs to send a reminder notification

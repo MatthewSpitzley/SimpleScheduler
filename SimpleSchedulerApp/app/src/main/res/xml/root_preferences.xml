@@ -9,13 +9,12 @@
 
     <PreferenceCategory app:title="Display">
         <!-- Main Screen -->
-        <!--<SwitchPreference
+        <SwitchPreference
             app:key="MainScreen"
             app:title="Should the Task List or the Calendar be the starting screen?"
-            app:defaultValue="false"
             app:summaryOff="Task List"
             app:summaryOn="Calendar"
-            /> -->
+            />
         <!-- 12 or 24 hour time -->
         <SwitchPreference
             app:key="HourFormat"

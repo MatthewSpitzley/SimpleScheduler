@@ -1,5 +1,9 @@
 package com.example.simpleschedulerproject;
 
+import android.content.SharedPreferences;
+
+import androidx.preference.PreferenceManager;
+
 import java.time.ZonedDateTime;
 import java.util.prefs.Preferences;
 
@@ -12,6 +16,7 @@ public class Task {
     private ZonedDateTime push;
     private boolean complete;
     private Settings settings;
+    private MainActivity main;
 
     public Task(String name, Category category, ZonedDateTime time, Recur recur, ZonedDateTime email, ZonedDateTime push, boolean complete) {
         this.name = name;
@@ -85,10 +90,11 @@ public class Task {
 
     @Override
     public String toString() {
-        int x = 0;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(main.getBaseContext() /* Activity context */);
+        int dateDisplayFormat = sharedPreferences.getInt("DateChoices", 0);
         return name +
                 ": category =" + category.toString() +
-                ", time =" + time.format(settings.dateDisplay(Preferences.userRoot().getInt("DateChoices", x))) +
+                ", time =" + time.format(settings.dateDisplay(dateDisplayFormat)) +
                 ", recur =" + recur.toString() +
                 ", email =" + email.toString() +
                 ", push =" + push.toString() +
