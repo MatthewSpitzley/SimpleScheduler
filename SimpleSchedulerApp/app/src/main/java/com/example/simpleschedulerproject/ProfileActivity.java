@@ -48,6 +48,8 @@ public class ProfileActivity extends AppCompatActivity {
         signOut = findViewById(R.id.signOut);
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN).requestEmail().build();
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
