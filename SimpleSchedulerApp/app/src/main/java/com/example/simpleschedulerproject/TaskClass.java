@@ -7,7 +7,7 @@ import androidx.preference.PreferenceManager;
 import java.time.ZonedDateTime;
 import java.util.prefs.Preferences;
 
-public class Task {
+public class TaskClass {
     private String name;
     private Category category;
     private ZonedDateTime time;
@@ -18,7 +18,7 @@ public class Task {
     private Settings settings;
     private MainActivity main;
 
-    public Task(String name, Category category, ZonedDateTime time, Recur recur, ZonedDateTime email, ZonedDateTime push, boolean complete) {
+    public TaskClass(String name, Category category, ZonedDateTime time, Recur recur, ZonedDateTime email, ZonedDateTime push, boolean complete) {
         this.name = name;
         this.category = category;
         this.time = time;
@@ -28,7 +28,7 @@ public class Task {
         this.complete = complete;
     }
 
-    public Task(String name) {
+    public TaskClass(String name) {
         this.name = name;
     }
 

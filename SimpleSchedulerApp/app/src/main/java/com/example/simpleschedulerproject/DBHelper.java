@@ -66,7 +66,7 @@ public class DBHelper extends SQLiteOpenHelper {
             return true;
     }
 
-    public boolean addTask(Task task) {
+    public boolean addTask(TaskClass task) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -99,7 +99,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean deleteTask(Task task) {
+    public boolean deleteTask(TaskClass task) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + TASK_TABLE + " WHERE " + COLUMN_TASK_NAME + " = " + task.getName();
 
@@ -138,8 +138,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return returnList;
     }
 
-    public List<Task> getTaskList() {
-        List<Task> returnList = new ArrayList<>();
+    public List<TaskClass> getTaskList() {
+        List<TaskClass> returnList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + TASK_TABLE;
 
@@ -156,7 +156,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 ZonedDateTime push = ZonedDateTime.parse(cursor.getString(5));
                 boolean complete = cursor.getInt(6) == 1 ? true: false;
 
-                Task newTask = new Task(name, category, time, recur, email, push, complete);
+                TaskClass newTask = new TaskClass(name, category, time, recur, email, push, complete);
                 returnList.add(newTask);
             } while (cursor.moveToNext());
         }
