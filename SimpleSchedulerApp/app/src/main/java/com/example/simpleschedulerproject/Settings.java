@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Settings {
     //changes between 12 and 24 hour times
-    public DateTimeFormatter toggleTime(boolean x){
+    public static DateTimeFormatter toggleTime(boolean x){
         DateTimeFormatter df = DateTimeFormatter.ofPattern("hh:mm aa");
         if(!x){
             //12 hr

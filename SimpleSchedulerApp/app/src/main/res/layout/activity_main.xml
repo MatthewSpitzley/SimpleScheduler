@@ -21,10 +21,15 @@
         tools:layout_editor_absoluteX="31dp"
         tools:layout_editor_absoluteY="200dp" />-->
 
+
+
+
+
     <ListView
         android:id="@+id/task_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
 
     <Button
         android:id="@+id/sign_in_button"
@@ -35,4 +40,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <Button
+        android:id="@+id/addTaskBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="296dp"
+        android:layout_marginBottom="16dp"
+        android:text="Add Task"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

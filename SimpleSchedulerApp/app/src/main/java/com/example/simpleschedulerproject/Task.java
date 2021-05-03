@@ -1,13 +1,9 @@
 package com.example.simpleschedulerproject;
 
-import android.content.SharedPreferences;
-
-import androidx.preference.PreferenceManager;
-
 import java.time.ZonedDateTime;
 import java.util.prefs.Preferences;
 
-public class TaskClass {
+public class Task {
     private String name;
     private Category category;
     private ZonedDateTime time;
@@ -16,9 +12,8 @@ public class TaskClass {
     private ZonedDateTime push;
     private boolean complete;
     private Settings settings;
-    private MainActivity main;
 
-    public TaskClass(String name, Category category, ZonedDateTime time, Recur recur, ZonedDateTime email, ZonedDateTime push, boolean complete) {
+    public Task(String name, Category category, ZonedDateTime time, Recur recur, ZonedDateTime email, ZonedDateTime push, boolean complete) {
         this.name = name;
         this.category = category;
         this.time = time;
@@ -28,7 +23,7 @@ public class TaskClass {
         this.complete = complete;
     }
 
-    public TaskClass(String name) {
+    public Task(String name) {
         this.name = name;
     }
 
@@ -90,11 +85,10 @@ public class TaskClass {
 
     @Override
     public String toString() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(main.getBaseContext() /* Activity context */);
-        int dateDisplayFormat = sharedPreferences.getInt("DateChoices", 0);
+        int x = 0;
         return name +
                 ": category =" + category.toString() +
-                ", time =" + time.toString() +
+           //    ", time =" + time.format(settings.dateDisplay(Preferences.userRoot().getInt("DateChoices", x))) +
                 ", recur =" + recur.toString() +
                 ", email =" + email.toString() +
                 ", push =" + push.toString() +
@@ -103,7 +97,7 @@ public class TaskClass {
     }
 }
 
-/**enum Recur {
+enum Recur {
     DAILY("Daily"),
     WEEKDAYS("Weekdays"),
     WEEKLY("Weekly"),
@@ -121,4 +115,3 @@ public class TaskClass {
         return recur;
     }
 }
-*/
