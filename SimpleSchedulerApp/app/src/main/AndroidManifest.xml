@@ -35,6 +35,9 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".AddTask"
+            android:label="AddTask" />
         <activity android:name=".MainActivity" />
 
         <provider android:name="DBProvider"
