@@ -56,4 +56,13 @@
     <string name="title_activity_google_sign_in">GoogleSignInActivity</string>
 
 
+    <string name="country_prompt">Choose a country</string>
+
+    <string-array name="recur_choices">
+        <item>Yes</item>
+        <item>No</item>
+
+    </string-array>
+
+
 </resources>
