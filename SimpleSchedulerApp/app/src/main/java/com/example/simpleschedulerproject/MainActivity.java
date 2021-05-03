@@ -20,6 +20,8 @@ import android.content.Intent;
 import android.widget.ListView;
 import android.content.Context;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
 
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private ImageButton settingsBtn;
-    //private Button calendarBtn;
+    private Button signInBtn;
     private DBHelper mHelper;
     private ListView mTaskList;
     private ArrayAdapter<String> mAdapter;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         mTaskList = (ListView) findViewById(R.id.task_list);
 
         settingsBtn = findViewById(R.id.settingsButton);
-        //calendarBtn = findViewById(R.id.calendarButton);
+        signInBtn = findViewById(R.id.sign_in_button);
 
         settingsBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -51,13 +53,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        /*calendarBtn.setOnClickListener(new View.OnClickListener(){
+        signInBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent i = new Intent(MainActivity.this, CalendarScreen.class);
+                Intent i = new Intent(MainActivity.this, GoogleSignInActivity.class);
                 startActivity(i);
             }
-        });*/
+        });
 
         updateUI();
     }

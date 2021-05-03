@@ -34,7 +34,7 @@ public class CalendarScreen extends AppCompatActivity {
     private TextView dateView;
     private Button noDate;
     private ImageButton settingsBtn;
-    private Button taskListBtn;
+    private Button signInBtn;
     private TextView mTextView;
 
 
@@ -48,7 +48,7 @@ public class CalendarScreen extends AppCompatActivity {
         dateView = (TextView)findViewById(R.id.date_view);
         noDate = (Button)findViewById(R.id.noDate);
         settingsBtn = findViewById(R.id.settings);
-        //taskListBtn = findViewById(R.id.taskList);
+        signInBtn = findViewById(R.id.sign_in_button);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
         int dateDisplayFormat = 0;
@@ -77,13 +77,13 @@ public class CalendarScreen extends AppCompatActivity {
             }
         });
 
-        /*taskListBtn.setOnClickListener(new View.OnClickListener(){
+        signInBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent i = new Intent(CalendarScreen.this, MainActivity.class);
+                Intent i = new Intent(CalendarScreen.this, GoogleSignInActivity.class);
                 startActivity(i);
             }
-        });*/
+        });
 
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
             @Override

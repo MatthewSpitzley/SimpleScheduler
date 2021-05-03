@@ -53,6 +53,7 @@
     -->
     <string name="hello_world">Hello Square World!</string>
     <string name="title_activity_launcher_fake">LauncherFakeActivity</string>
+    <string name="title_activity_google_sign_in">GoogleSignInActivity</string>
 
 
 </resources>

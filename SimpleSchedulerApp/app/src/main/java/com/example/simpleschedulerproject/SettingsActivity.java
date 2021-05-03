@@ -41,15 +41,15 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
-            Preference signInButton = findPreference(getString(R.string.GoogleSignIn));
+            //Preference signInButton = findPreference(getString(R.string.GoogleSignIn));
             Preference helpButton = findPreference(getString(R.string.help));
-            signInButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            /*signInButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
 
                     return true;
                 }
-            });
+            });*/
             helpButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {

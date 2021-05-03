@@ -46,11 +46,12 @@
         android:src="@drawable/gear"
         android:layout_alignParentEnd="true"/>
 
-    <!--<Button
-        android:id="@+id/taskList"
+    <Button
+        android:id="@+id/sign_in_button"
+        android:text="Sign in with Google"
+        android:textAllCaps="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="54dp"420
-        android:layout_centerHorizontal="true"
-        android:text="Tasks List Screen"/>-->
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"/>
 </RelativeLayout>
