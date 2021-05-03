@@ -1,10 +1,5 @@
 package com.example.simpleschedulerproject;
 
-import com.example.simpleschedulerproject.R;
-import android.app.Activity;
-import android.widget.TextView;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.time.format.DateTimeFormatter;
 
 public class Settings {
@@ -91,7 +86,7 @@ public class Settings {
         return pattern;
     }
 
-    //user enables whether or not they want late notifications
+    /*//user enables whether or not they want late notifications
     public void lateNotification(boolean x){
 
     }
@@ -103,10 +98,5 @@ public class Settings {
 
     public void notificationPush(boolean x){
 
-    }
-
-    //user can sign in through google
-    public void googleSignIn(){
-
-    }
+    }*/
 }
