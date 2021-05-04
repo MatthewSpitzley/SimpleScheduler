@@ -54,15 +54,19 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="title_activity_launcher_fake">LauncherFakeActivity</string>
     <string name="title_activity_google_sign_in">GoogleSignInActivity</string>
-
-
-    <string name="country_prompt">Choose a country</string>
+    <string name="spinner_title">Categories</string>
 
     <string-array name="recur_choices">
         <item>Yes</item>
         <item>No</item>
 
     </string-array>
+    <string-array name="cat_choices">
+        <item>Work</item>
+        <item>School</item>
+        <item>Personal</item>
+    </string-array>
+"
 
 
 </resources>
