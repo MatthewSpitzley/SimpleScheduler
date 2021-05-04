@@ -39,6 +39,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -87,7 +88,7 @@ public class TaskList extends AppCompatActivity {
             }
         });
 
-        updateUI();
+       updateUI();
     }
 
     float xBegin;
@@ -119,6 +120,7 @@ public class TaskList extends AppCompatActivity {
         }
         return false;
     }
+
 
     private void updateUI() {
         ArrayList<String> taskList = new ArrayList<>();
@@ -175,26 +177,7 @@ public class TaskList extends AppCompatActivity {
                 catEditText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AlertDialog.Builder catDialog = new AlertDialog.Builder(TaskList.this);
-                        catDialog.setTitle("Categories");
-                        String[] catChoices = {"Work, School, Personal"};
-                        catDialog.setItems(catChoices, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch(which) {
-                                    case 0: // Work
-                                        catEditText.setText(catChoices[0]);
-                                        break;
-                                    case 1: // School
-                                        catEditText.setText(catChoices[1]);
-                                        break;
-                                    case 2: // Personal
-                                        catEditText.setText(catChoices[2]);
-                                        break;
 
-                                }
-                            }
-                        });
                     }
                 });
                 layout.addView(catEditText);
@@ -333,12 +316,12 @@ public class TaskList extends AppCompatActivity {
 
                                 TaskClass mTask = new TaskClass(task, category, dateTime, recurEnum, dateTimeEmail, dateTimePush, false);
                                 mHelper.addTask(mTask);
+                                updateUI();
                             }
                         })
                         .setNegativeButton("Cancel", null)
                         .create();
                 dialog.show();
-                updateUI();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
