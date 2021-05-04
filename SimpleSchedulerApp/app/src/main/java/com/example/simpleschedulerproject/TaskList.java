@@ -2,10 +2,12 @@ package com.example.simpleschedulerproject;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -150,8 +152,10 @@ public class TaskList extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
+        Boolean emailNoti = sharedPreferences.getBoolean("NotificationEmail", false);
+        Boolean pushNoti = sharedPreferences.getBoolean("NotificationPush", false);
+            switch (item.getItemId()) {
             case R.id.action_add_task:
                 final EditText taskEditText = new EditText(this);
                 Context context = this;
@@ -202,13 +206,13 @@ public class TaskList extends AppCompatActivity {
                         tPicker = new TimePickerDialog(TaskList.this,
                                 new TimePickerDialog.OnTimeSetListener() {
                                     @Override
-                                    public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
+                                    public void onTimeSet(TimePicker tp, int hour, int minutes) {
                                         String formattedHour = "" + hour;
                                         String formattedMinutes = "" + minutes;
-                                        if(sHour < 10)
-                                            formattedHour = "0" + sHour;
-                                        if(sMinute < 10)
-                                            formattedMinutes = "0" + sMinute;
+                                        if(hour < 10)
+                                            formattedHour = "0" + hour;
+                                        if(minutes < 10)
+                                            formattedMinutes = "0" + minutes;
                                         timeEditText.setText(formattedHour + ":" + formattedMinutes);
                                     }
                                 }, hour, minutes, true);
@@ -253,11 +257,21 @@ public class TaskList extends AppCompatActivity {
                 recurEditText.setHint("Recurrence");
                 layout.addView(recurEditText);
                 final EditText emailET = new EditText(this);
-                emailET.setHint("Email Notifications?");
-                layout.addView(emailET);
+                if(!emailNoti){
+                    emailET.setText("No");
+                }
+                else{
+                    emailET.setHint("Email Notifications?");
+                    layout.addView(emailET);
+                }
                 final EditText pushET = new EditText(this);
-                pushET.setHint("Push Notifications?");
-                layout.addView(pushET);
+                if(!pushNoti){
+                    pushET.setText("No");
+                }
+                else{
+                    pushET.setHint("Push Notifications?");
+                    layout.addView(pushET);
+                }
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Add a new task")
                         .setView(layout)
