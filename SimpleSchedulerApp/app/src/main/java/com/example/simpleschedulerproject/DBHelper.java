@@ -12,6 +12,9 @@ import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
 
+    public static final String DB_NAME = "com.example.simpleschedulerproject.db";
+    public static final int DB_VERSION = 1;
+
     public static final String CATEGORY_TABLE = "CATEGORY_TABLE";
     public static final String COLUMN_CATEGORY_NAME = "COLUMN_CATEGORY_NAME";
     public static final String TASK_TABLE = "TASK_TABLE";
