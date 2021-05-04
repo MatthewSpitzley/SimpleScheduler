@@ -336,6 +336,6 @@ public class TaskList extends AppCompatActivity {
                 DBHelper.COLUMN_TASK_NAME + " = ?",
                 new String[]{task});
         db.close();
-        //updateUI();
+        updateUI();
     }
 }
