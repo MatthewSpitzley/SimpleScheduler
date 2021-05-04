@@ -137,8 +137,10 @@ public class CalendarScreen extends AppCompatActivity {
                 }
                 String formattedDate = targetFormat.format(date);
                 dateView.setText(formattedDate);
+                updateUI();
             }
         });
+        updateUI();
     }
 
     private void updateUI() {
@@ -196,26 +198,7 @@ public class CalendarScreen extends AppCompatActivity {
                 catEditText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AlertDialog.Builder catDialog = new AlertDialog.Builder(CalendarScreen.this);
-                        catDialog.setTitle("Categories");
-                        String[] catChoices = {"Work, School, Personal"};
-                        catDialog.setItems(catChoices, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch(which) {
-                                    case 0: // Work
-                                        catEditText.setText(catChoices[0]);
-                                        break;
-                                    case 1: // School
-                                        catEditText.setText(catChoices[1]);
-                                        break;
-                                    case 2: // Personal
-                                        catEditText.setText(catChoices[2]);
-                                        break;
 
-                                }
-                            }
-                        });
                     }
                 });
                 layout.addView(catEditText);
@@ -354,12 +337,12 @@ public class CalendarScreen extends AppCompatActivity {
 
                                 TaskClass mTask = new TaskClass(task, category, dateTime, recurEnum, dateTimeEmail, dateTimePush, false);
                                 mHelper.addTask(mTask);
+                                updateUI();
                             }
                         })
                         .setNegativeButton("Cancel", null)
                         .create();
                 dialog.show();
-                updateUI();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -400,6 +383,7 @@ public class CalendarScreen extends AppCompatActivity {
         if(dateView.getText()!="No Date"){
             dateView.setText(formattedDate);
         }
+        updateUI();
     }
 
     //Change the current activity based on the beginning and ending location of the finger
