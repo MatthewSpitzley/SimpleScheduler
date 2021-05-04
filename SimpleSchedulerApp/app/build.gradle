@@ -46,33 +46,9 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'androidx.wear:wear:1.1.0'
 
-    implementation files('libs/activation-1.1.jar')
-    implementation files('libs/kotlin-stdlib-1.4.32.jar')
-    implementation files('libs/okio-2.8.0.jar')
-    implementation files('libs/commons-collections4-4.4.jar')
-    implementation files('libs/commons-io-2.8.0.jar')
-    implementation files('libs/okhttp-4.9.1.jar')
-    implementation files('libs/annotations-13.0.jar')
-    implementation files('libs/bsh-2.0b6.jar')
-    implementation files('libs/commons-codec-1.15.jar')
-    implementation files('libs/commons-text-1.9.jar')
-    implementation files('libs/jeval-0.9.4.jar')
-    implementation files('libs/gson-2.8.6.jar')
-    implementation files('libs/commons-lang3-3.11.jar')
-    implementation files('libs/commons-beanutils-1.9.4.jar')
-    implementation files('libs/javax.mail-1.6.2.jar')
-    implementation files('libs/slf4j-android-1.6.1-RC1.jar')
-    implementation files('libs/spring-core-5.2.9.RELEASE.jar')
-    implementation files('libs/spring-jcl-5.2.9.RELEASE.jar')
-    implementation files('libs/symmetric-android-3.12.9.jar')
-    implementation files('libs/symmetric-core-3.12.9.jar')
-    implementation files('libs/symmetric-csv-3.12.9.jar')
-    implementation files('libs/symmetric-db-3.12.9.jar')
-    implementation files('libs/symmetric-io-3.12.9.jar')
-    implementation files('libs/symmetric-util-3.12.9.jar')
-
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation 'com.android.volley:volley:1.2.0'
 }

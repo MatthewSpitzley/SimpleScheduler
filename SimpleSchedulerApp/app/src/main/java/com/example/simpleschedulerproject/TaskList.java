@@ -3,16 +3,21 @@ package com.example.simpleschedulerproject;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
+
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Button;
@@ -23,9 +28,11 @@ import android.content.Context;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class TaskList extends AppCompatActivity {
     private static final String TAG = "TaskList";
@@ -38,6 +45,9 @@ public class TaskList extends AppCompatActivity {
     private Settings settings;
     private TimePicker mTimePicker;
     private Spinner spinner;
+    private TimePickerDialog tPicker;
+    private DatePickerDialog dPicker;
+    private TextView tView;
 
 
     @Override
@@ -50,6 +60,10 @@ public class TaskList extends AppCompatActivity {
 
         settingsBtn = findViewById(R.id.settingsButton);
         signInBtn = findViewById(R.id.sign_in_button);
+
+
+
+
 
         settingsBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -149,10 +163,49 @@ public class TaskList extends AppCompatActivity {
                 catEditText.setHint("Category");
                 layout.addView(catEditText);
                 final EditText timeEditText = new EditText(this);
-                timeEditText.setHint("Due date/time");
+                timeEditText.setHint("Completion Time");
+                timeEditText.setInputType(InputType.TYPE_NULL);
+                timeEditText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Calendar calendar = Calendar.getInstance();
+                        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                        int minutes = calendar.get(Calendar.MINUTE);
+                        // time picker dialog
+                        tPicker = new TimePickerDialog(TaskList.this,
+                                new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
+                                        timeEditText.setText(sHour + ":" + sMinute);
+                                    }
+                                }, hour, minutes, true);
+                        tPicker.show();
+                    }
+                });
                 layout.addView(timeEditText);
+                final EditText dateEditText = new EditText(this);
+                dateEditText.setHint("Completion Date");
+                dateEditText.setInputType(InputType.TYPE_NULL);
+                dateEditText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Calendar calendar = Calendar.getInstance();
+                        int month = calendar.get(Calendar.MONTH);
+                        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                        int year = calendar.get(Calendar.YEAR);
+                        dPicker = new DatePickerDialog(TaskList.this, new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                dateEditText.setText(month + "/" + dayOfMonth + "/" + year);
+                            }
+                        }, year, month, dayOfMonth);
+                        dPicker.show();
+                    }
+                });
+                layout.addView(dateEditText);
                 final EditText recurEditText = new EditText(this);
                 recurEditText.setHint("Recurrence");
+                layout.addView(recurEditText);
                 final EditText emailET = new EditText(this);
                 if(!emailNoti){
                     emailET.setText("No");
@@ -181,8 +234,11 @@ public class TaskList extends AppCompatActivity {
                                 Category category = new Category(cat);
 
                                 String time = String.valueOf(timeEditText.getText());
-                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy HH:mm:ss z");
-                                ZonedDateTime dateTime = ZonedDateTime.parse(time, formatter);
+                                String date = String.valueOf(dateEditText.getText());
+                                String timeDate = new String(date + " " + time + ":00 CST");
+
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy HH:mm:ss z");
+                                ZonedDateTime dateTime = ZonedDateTime.parse(timeDate, formatter);
 
                                 String recur = String.valueOf(recurEditText.getText());
                                 Recur recurEnum;

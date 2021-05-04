@@ -158,7 +158,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Recur recur = Recur.valueOf(cursor.getString(3));
                 ZonedDateTime email = ZonedDateTime.parse(cursor.getString(4));
                 ZonedDateTime push = ZonedDateTime.parse(cursor.getString(5));
-                boolean complete = cursor.getInt(6) == 1 ? true: false;
+                boolean complete = cursor.getInt(6) == 1;
 
                 TaskClass newTask = new TaskClass(name, category, time, recur, email, push, complete);
                 returnList.add(newTask);

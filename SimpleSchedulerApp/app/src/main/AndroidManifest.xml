@@ -6,8 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -21,7 +19,7 @@
             android:label="Profile Information"/>
         <activity
             android:name=".GoogleSignInActivity"
-            android:label="Google Sign In"></activity>
+            android:label="Google Sign In" />
         <activity
             android:name=".LauncherFakeActivity"
             android:label="LauncherSystem">
@@ -43,12 +41,6 @@
             android:name=".TaskList"
             android:label="Task List"/>
 
-        <provider
-            android:name="DBProvider"
-            android:authorities="com.jumpmind.symmetric.DbProvider"
-            android:exported="false">
-            <grant-uri-permission android:pathPattern=".*" />
-        </provider>
     </application>
 
 </manifest>
