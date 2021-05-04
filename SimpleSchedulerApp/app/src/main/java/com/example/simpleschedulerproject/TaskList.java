@@ -1,22 +1,30 @@
 package com.example.simpleschedulerproject;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Button;
 import android.content.Intent;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.content.Context;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class TaskList extends AppCompatActivity {
@@ -42,16 +50,10 @@ public class TaskList extends AppCompatActivity {
 
         settingsBtn = findViewById(R.id.settingsButton);
         signInBtn = findViewById(R.id.sign_in_button);
-        addTaskBtn = findViewById(R.id.addTaskBtn);
 
 
-        addTaskBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(TaskList.this, AddTask.class);
-                startActivity(i);
-            }
-        });
+
+
 
         settingsBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -104,11 +106,11 @@ public class TaskList extends AppCompatActivity {
     private void updateUI() {
         ArrayList<String> taskList = new ArrayList<>();
         SQLiteDatabase db = mHelper.getReadableDatabase();
-        Cursor cursor = db.query(TaskContract.TaskEntry.TASK_TABLE,
-                new String[]{TaskContract.TaskEntry.COLUMN_TASK_NAME},
+        Cursor cursor = db.query(DBHelper.TASK_TABLE,
+                new String[]{DBHelper.COLUMN_TASK_NAME},
                 null, null, null, null, null);
         while (cursor.moveToNext()) {
-            int idx = cursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_TASK_NAME);
+            int idx = cursor.getColumnIndex(DBHelper.COLUMN_TASK_NAME);
             taskList.add(cursor.getString(idx));
         }
 
@@ -133,7 +135,7 @@ public class TaskList extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.task_list, menu);
         return super.onCreateOptionsMenu(menu);
     }
-/**
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -148,25 +150,18 @@ public class TaskList extends AppCompatActivity {
                 final EditText catEditText = new EditText(this);
                 catEditText.setHint("Category");
                 layout.addView(catEditText);
-
-                EditText timeEditText = findViewById(R.id.timeEditText);
+                final EditText timeEditText = new EditText(this);
+                timeEditText.setHint("Due date/time");
                 layout.addView(timeEditText);
-
                 final EditText recurEditText = new EditText(this);
-                recurEditText.setHint("Recurring Notifications");
+                recurEditText.setHint("Recurrence");
                 layout.addView(recurEditText);
-                timeEditText = (EditText) findViewById(R.id.timeEditText);
-                perform click event listener on edit text
-
-                spinner = (Spinner) findViewById(R.id.spinner);
-                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                        R.array.recur_choices, android.R.layout.simple_spinner_item);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner.setAdapter(adapter);
-
-
-
-
+                final EditText emailET = new EditText(this);
+                emailET.setHint("Email Notifications?");
+                layout.addView(emailET);
+                final EditText pushET = new EditText(this);
+                pushET.setHint("Push Notifications?");
+                layout.addView(pushET);
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Add a new task")
                         .setView(layout)
@@ -174,40 +169,36 @@ public class TaskList extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String task = String.valueOf(taskEditText.getText());
+
                                 String cat = String.valueOf(catEditText.getText());
+                                Category category = new Category(cat);
+
+                                String time = String.valueOf(timeEditText.getText());
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy HH:mm:ss z");
+                                ZonedDateTime dateTime = ZonedDateTime.parse(time, formatter);
+
                                 String recur = String.valueOf(recurEditText.getText());
+                                Recur recurEnum;
+                                if(recur.equalsIgnoreCase("DAILY"))
+                                    recurEnum = Recur.DAILY;
+                                else if(recur.equalsIgnoreCase("WEEKDAYS"))
+                                    recurEnum = Recur.WEEKDAYS;
+                                else if(recur.equalsIgnoreCase("WEEKLY"))
+                                    recurEnum = Recur.WEEKLY;
+                                else if(recur.equalsIgnoreCase("MONTHLY"))
+                                    recurEnum = Recur.WEEKLY;
+                                else if(recur.equalsIgnoreCase("YEARLY"))
+                                    recurEnum = Recur.YEARLY;
+                                else
+                                    recurEnum = Recur.DAILY;
+                                String email = String.valueOf(emailET.getText());
+                                ZonedDateTime dateTimeEmail = dateTime;
 
+                                String push = String.valueOf(pushET.getText());
+                                ZonedDateTime dateTimePush = dateTime;
 
-                                timeEditText.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Calendar mCurrentTime = Calendar.getInstance();
-                                        int hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
-                                        int minute = mCurrentTime.get(Calendar.MINUTE);
-                                        TimePickerDialog mTimePicker = new TimePickerDialog(TaskList.this, new TimePickerDialog.OnTimeSetListener() {
-                                            @Override
-                                            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                                                timeEditText.setText(selectedHour + ":" + selectedMinute);
-                                            }
-                                        }, hour, minute, false);//Yes 24 hour time
-                                        mTimePicker.setTitle("Select Time");
-                                        mTimePicker.show();
-
-                                    }
-                                });
-
-
-
-                                SQLiteDatabase db = mHelper.getWritableDatabase();
-                                ContentValues values = new ContentValues();
-                                values.put(TaskContract.TaskEntry.COLUMN_TASK_NAME, task);
-                                db.insertWithOnConflict(TaskContract.TaskEntry.TASK_TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                                values.put(TaskContract.TaskEntry.COLUMN_TASK_CATEGORY, cat);
-                                // db.insertWithOnConflict(TaskContract.TaskEntry.TASK_TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                                // values.put(TaskContract.TaskEntry.COLUMN_TASK_TIME, String.valueOf(timeEditText));
-                                db.insertWithOnConflict(TaskContract.TaskEntry.TASK_TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                                db.close();
-
+                                TaskClass mTask = new TaskClass(task, category, dateTime, recurEnum, dateTimeEmail, dateTimePush, false);
+                                mHelper.addTask(mTask);
                             }
                         })
                         .setNegativeButton("Cancel", null)
@@ -219,14 +210,14 @@ public class TaskList extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    */
+
     public void deleteTask(View view) {
         View parent = (View) view.getParent();
         TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
         String task = String.valueOf(taskTextView.getText());
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        db.delete(TaskContract.TaskEntry.TASK_TABLE,
-                TaskContract.TaskEntry.COLUMN_TASK_NAME + " = ?",
+        db.delete(DBHelper.TASK_TABLE,
+                DBHelper.COLUMN_TASK_NAME + " = ?",
                 new String[]{task});
         db.close();
         updateUI();
