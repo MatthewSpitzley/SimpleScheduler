@@ -2,12 +2,10 @@ package com.example.simpleschedulerproject;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -29,10 +27,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class TaskList extends AppCompatActivity {
     private static final String TAG = "TaskList";
@@ -148,9 +148,7 @@ public class TaskList extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
-        Boolean emailNoti = sharedPreferences.getBoolean("NotificationEmail", false);
-        Boolean pushNoti = sharedPreferences.getBoolean("NotificationPush", false);
+
         switch (item.getItemId()) {
             case R.id.action_add_task:
                 final EditText taskEditText = new EditText(this);
@@ -171,12 +169,19 @@ public class TaskList extends AppCompatActivity {
                         final Calendar calendar = Calendar.getInstance();
                         int hour = calendar.get(Calendar.HOUR_OF_DAY);
                         int minutes = calendar.get(Calendar.MINUTE);
+
                         // time picker dialog
                         tPicker = new TimePickerDialog(TaskList.this,
                                 new TimePickerDialog.OnTimeSetListener() {
                                     @Override
                                     public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
-                                        timeEditText.setText(sHour + ":" + sMinute);
+                                        String formattedHour = "" + hour;
+                                        String formattedMinutes = "" + minutes;
+                                        if(sHour < 10)
+                                            formattedHour = "0" + sHour;
+                                        if(sMinute < 10)
+                                            formattedMinutes = "0" + sMinute;
+                                        timeEditText.setText(formattedHour + ":" + formattedMinutes);
                                     }
                                 }, hour, minutes, true);
                         tPicker.show();
@@ -196,7 +201,20 @@ public class TaskList extends AppCompatActivity {
                         dPicker = new DatePickerDialog(TaskList.this, new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                dateEditText.setText(month + "/" + dayOfMonth + "/" + year);
+                                month = month + 1;
+                                String formattedMonth = "" + month;
+                                String formattedDayOfMonth = "" + dayOfMonth;
+
+                                if(month < 10){
+
+                                    formattedMonth = "0" + month;
+                                }
+                                if(dayOfMonth < 10){
+
+                                    formattedDayOfMonth = "0" + dayOfMonth;
+                                }
+                                dateEditText.setText(formattedMonth + "/" + formattedDayOfMonth + "/" + year);
+                                // dateEditText.setText(month + "/" + dayOfMonth + "/" + year);
                             }
                         }, year, month, dayOfMonth);
                         dPicker.show();
@@ -207,21 +225,11 @@ public class TaskList extends AppCompatActivity {
                 recurEditText.setHint("Recurrence");
                 layout.addView(recurEditText);
                 final EditText emailET = new EditText(this);
-                if(!emailNoti){
-                    emailET.setText("No");
-                }
-                else{
-                    emailET.setHint("Email Notifications?");
-                    layout.addView(emailET);
-                }
+                emailET.setHint("Email Notifications?");
+                layout.addView(emailET);
                 final EditText pushET = new EditText(this);
-                if(!pushNoti){
-                    pushET.setText("No");
-                }
-                else{
-                    pushET.setHint("Push Notifications?");
-                    layout.addView(pushET);
-                }
+                pushET.setHint("Push Notifications?");
+                layout.addView(pushET);
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Add a new task")
                         .setView(layout)
@@ -237,23 +245,22 @@ public class TaskList extends AppCompatActivity {
                                 String date = String.valueOf(dateEditText.getText());
                                 String timeDate = new String(date + " " + time + ":00 CST");
 
-                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy HH:mm:ss z");
-                                ZonedDateTime dateTime = ZonedDateTime.parse(timeDate, formatter);
+                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss z");
+                                 ZonedDateTime dateTime = ZonedDateTime.parse(timeDate, formatter);
 
                                 String recur = String.valueOf(recurEditText.getText());
-                                Recur recurEnum;
+                                Recur recurEnum = Recur.DAILY;
                                 if(recur.equalsIgnoreCase("DAILY"))
                                     recurEnum = Recur.DAILY;
-                                else if(recur.equalsIgnoreCase("WEEKDAYS"))
+                                if(recur.equalsIgnoreCase("WEEKDAYS"))
                                     recurEnum = Recur.WEEKDAYS;
-                                else if(recur.equalsIgnoreCase("WEEKLY"))
+                                if(recur.equalsIgnoreCase("WEEKLY"))
                                     recurEnum = Recur.WEEKLY;
-                                else if(recur.equalsIgnoreCase("MONTHLY"))
+                                if(recur.equalsIgnoreCase("MONTHLY"))
                                     recurEnum = Recur.WEEKLY;
-                                else if(recur.equalsIgnoreCase("YEARLY"))
+                                if(recur.equalsIgnoreCase("YEARLY"))
                                     recurEnum = Recur.YEARLY;
-                                else
-                                    recurEnum = Recur.DAILY;
+
                                 String email = String.valueOf(emailET.getText());
                                 ZonedDateTime dateTimeEmail = dateTime;
 
