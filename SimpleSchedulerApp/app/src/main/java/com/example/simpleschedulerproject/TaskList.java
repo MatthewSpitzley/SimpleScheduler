@@ -16,7 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -28,12 +30,14 @@ import android.content.Context;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class TaskList extends AppCompatActivity {
@@ -45,8 +49,6 @@ public class TaskList extends AppCompatActivity {
     private ListView mTaskList;
     private ArrayAdapter<String> mAdapter;
     private Settings settings;
-    private TimePicker mTimePicker;
-    private Spinner spinner;
     private TimePickerDialog tPicker;
     private DatePickerDialog dPicker;
     private TextView tView;
@@ -164,6 +166,32 @@ public class TaskList extends AppCompatActivity {
                 layout.addView(taskEditText);
                 final EditText catEditText = new EditText(this);
                 catEditText.setHint("Category");
+
+                catEditText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder catDialog = new AlertDialog.Builder(TaskList.this);
+                        catDialog.setTitle("Categories");
+                        String[] catChoices = {"Work, School, Personal"};
+                        catDialog.setItems(catChoices, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch(which) {
+                                    case 0: // Work
+                                        catEditText.setText(catChoices[0]);
+                                        break;
+                                    case 1: // School
+                                        catEditText.setText(catChoices[1]);
+                                        break;
+                                    case 2: // Personal
+                                        catEditText.setText(catChoices[2]);
+                                        break;
+
+                                }
+                            }
+                        });
+                    }
+                });
                 layout.addView(catEditText);
                 final EditText timeEditText = new EditText(this);
                 timeEditText.setHint("Completion Time");
@@ -179,13 +207,13 @@ public class TaskList extends AppCompatActivity {
                         tPicker = new TimePickerDialog(TaskList.this,
                                 new TimePickerDialog.OnTimeSetListener() {
                                     @Override
-                                    public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
+                                    public void onTimeSet(TimePicker tp, int hour, int minutes) {
                                         String formattedHour = "" + hour;
                                         String formattedMinutes = "" + minutes;
-                                        if(sHour < 10)
-                                            formattedHour = "0" + sHour;
-                                        if(sMinute < 10)
-                                            formattedMinutes = "0" + sMinute;
+                                        if(hour < 10)
+                                            formattedHour = "0" + hour;
+                                        if(minutes < 10)
+                                            formattedMinutes = "0" + minutes;
                                         timeEditText.setText(formattedHour + ":" + formattedMinutes);
                                     }
                                 }, hour, minutes, hourFormatSetting);
@@ -295,7 +323,6 @@ public class TaskList extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
     public void deleteTask(View view) {
         View parent = (View) view.getParent();
         TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
