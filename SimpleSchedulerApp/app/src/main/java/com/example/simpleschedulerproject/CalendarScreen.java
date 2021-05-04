@@ -36,6 +36,10 @@ public class CalendarScreen extends AppCompatActivity {
     private ImageButton settingsBtn;
     private Button signInBtn;
     private TextView mTextView;
+    private int selectedYear;
+    private int selectedMonth;
+    private int selectedDayOfMonth;
+    private Settings settings = new Settings();
 
 
     @Override
@@ -43,13 +47,13 @@ public class CalendarScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_screen);
 
-        Settings settings = new Settings();
         calendar = (CalendarView)findViewById(R.id.calendar);
         dateView = (TextView)findViewById(R.id.date_view);
         noDate = (Button)findViewById(R.id.noDate);
         settingsBtn = findViewById(R.id.settings);
         signInBtn = findViewById(R.id.sign_in_button);
 
+        //get the shared preferences and change the text for the displayed date according to user preference
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
         int dateDisplayFormat = 0;
         try{
@@ -57,18 +61,21 @@ public class CalendarScreen extends AppCompatActivity {
         } catch(NumberFormatException e){
             e.printStackTrace();
         }
-        //int dateDisplayFormat = Integer.valueOf(sharedPreferences.getString("DateChoices", ""));
         DateTimeFormatter df = DateTimeFormatter.ofPattern(settings.dateDisplay(dateDisplayFormat));
         LocalDateTime ldt = LocalDateTime.now().plusDays(0);
+        selectedYear = ldt.getYear();
+        selectedMonth = ldt.getMonthValue();
+        selectedDayOfMonth = ldt.getDayOfMonth();
         dateView.setText(df.format(ldt));
 
         noDate.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                //Intent i = new Intent(MainActivity.this, SettingsActivity.class);
-                //startActivity(i);
+                //Show the list of tasks that have no date
             }
         });
+
+        //When the user selects the settings button this will open the root_preferences
         settingsBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -88,9 +95,11 @@ public class CalendarScreen extends AppCompatActivity {
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth){
+                selectedYear = year;
+                selectedMonth = month+1;
+                selectedDayOfMonth = dayOfMonth;
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(calendar.getContext() /* Activity context */);
                 int dateDisplayFormat = Integer.valueOf(sharedPreferences.getString("DateChoices", ""));
-                //DateTimeFormatter df = DateTimeFormatter.ofPattern(settings.dateDisplay(dateDisplayFormat));
                 String dateString = dayOfMonth + "/" + (month+1) + "/" + year;
                 DateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy");
                 DateFormat targetFormat = new SimpleDateFormat(settings.dateDisplay(dateDisplayFormat));
@@ -108,6 +117,24 @@ public class CalendarScreen extends AppCompatActivity {
         mTextView = (TextView) findViewById(R.id.text);
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(calendar.getContext() /* Activity context */);
+        int dateDisplayFormat = Integer.valueOf(sharedPreferences.getString("DateChoices", ""));
+        String dateString = selectedDayOfMonth + "/" + (selectedMonth) + "/" + selectedYear;
+        DateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat targetFormat = new SimpleDateFormat(settings.dateDisplay(dateDisplayFormat));
+        Date date = null;
+        try {
+            date = originalFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String formattedDate = targetFormat.format(date);
+        dateView.setText(formattedDate);
+    }
+
     float xBegin;
     float xEnd;
     public boolean onTouchEvent(MotionEvent touchEvent){
