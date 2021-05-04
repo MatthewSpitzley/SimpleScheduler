@@ -156,8 +156,6 @@ public class GoogleSignInActivity extends AppCompatActivity {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            fetchCategoriesParse();
-            fetchTasksParse();
             handleSignInResult(task);
         }
     }
