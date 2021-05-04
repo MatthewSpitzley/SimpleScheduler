@@ -26,6 +26,14 @@
         android:layout_height="wrap_content">
     </CalendarView>
 
+    <!-- Add task list view under calendar -->
+    <ListView
+        android:id="@+id/task_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/calendar"
+        android:layout_above="@id/sign_in_button"
+        />
 
     <!-- Add NoDate Button to display any tasks with no date-->
     <Button
