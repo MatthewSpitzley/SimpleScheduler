@@ -32,6 +32,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,12 +48,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import okhttp3.OkHttpClient;
+
 public class TaskList extends AppCompatActivity {
     private static final String TAG = "TaskList";
 
     private ImageButton settingsBtn;
     private Button signInBtn, addTaskBtn;
     private DBHelper mHelper;
+    private RequestQueue mQueue;
+    private OkHttpClient client;
     private ListView mTaskList;
     private ArrayAdapter<String> mAdapter;
     private Settings settings;
@@ -123,8 +131,14 @@ public class TaskList extends AppCompatActivity {
 
 
     private void updateUI() {
-        ArrayList<String> taskList = new ArrayList<>();
         SQLiteDatabase db = mHelper.getReadableDatabase();
+
+        /*if(GoogleSignIn.getLastSignedInAccount(this) != null) {
+            mQueue = Volley.newRequestQueue(this);
+            mHelper.fetchTasksParse(this, mQueue, mHelper);
+        }*/
+
+        ArrayList<String> taskList = new ArrayList<>();
         Cursor cursor = db.query(DBHelper.TASK_TABLE,
                 new String[]{DBHelper.COLUMN_TASK_NAME},
                 null, null, null, null, null);

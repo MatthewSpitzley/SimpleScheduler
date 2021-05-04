@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -21,9 +22,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -164,7 +168,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void fetchTasksParse(Context context, RequestQueue mQueue, DBHelper mHelper) {
-        String url = "http://localhost/fetchTasks.php";
+        String url = "https://192.168.1.5/fetchTasks.php";
 
         JsonObjectRequest request = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -196,7 +200,10 @@ public class DBHelper extends SQLiteOpenHelper {
                         error.printStackTrace();
                     }
                 });
-
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         mQueue.add(request);
     }
 
@@ -301,8 +308,8 @@ public class DBHelper extends SQLiteOpenHelper {
         mQueue.add(stringRequest);
     }*/
 
-    public List<Category> getCategoryList() {
-        List<Category> returnList = new ArrayList<>();
+    public ArrayList<Category> getCategoryList() {
+        ArrayList<Category> returnList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + CATEGORY_TABLE;
 
@@ -327,8 +334,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //get all task list
-    public List<TaskClass> getTaskList() {
-        List<TaskClass> returnList = new ArrayList<>();
+    public ArrayList<TaskClass> getTaskList() {
+        ArrayList<TaskClass> returnList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + TASK_TABLE;
 
@@ -359,8 +366,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //get task list of given day
-    public List<TaskClass> getTaskList(ZonedDateTime calendarDate) {
-        List<TaskClass> returnList = new ArrayList<>();
+    public ArrayList<TaskClass> getTaskList(ZonedDateTime calendarDate) {
+        ArrayList<TaskClass> returnList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + TASK_TABLE;
 
@@ -396,8 +403,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //get task list of no dates
-    public List<TaskClass> getTaskList(String noDate) {
-        List<TaskClass> returnList = new ArrayList<>();
+    public ArrayList<TaskClass> getTaskList(String noDate) {
+        ArrayList<TaskClass> returnList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + TASK_TABLE;
 
