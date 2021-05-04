@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ProfileActivity">
 
+    <!--Image for user profile image-->
     <ImageView
         android:id="@+id/profileImage"
         android:layout_width="100dp"
@@ -15,6 +16,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="110dp" />
 
+    <!--Image for user profile name-->
     <TextView
         android:id="@+id/profileName"
         android:layout_width="wrap_content"
@@ -23,6 +25,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="300dp"/>
 
+    <!--Image for user profile email-->
     <TextView
         android:id="@+id/profileEmail"
         android:layout_width="wrap_content"
@@ -30,6 +33,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="400dp"/>
+
+    <!-- Button to sign out of google profile-->
     <Button
         android:id="@+id/signOut"
         android:layout_width="wrap_content"

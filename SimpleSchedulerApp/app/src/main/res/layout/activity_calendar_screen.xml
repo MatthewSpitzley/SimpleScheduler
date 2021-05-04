@@ -47,7 +47,7 @@
         android:src="@drawable/gear"
         android:layout_alignParentEnd="true"/>
 
-    <!-- Add Sign in Button-->
+    <!-- Button that takes user to sign in page-->
     <Button
         android:id="@+id/sign_in_button"
         android:text="Sign in with Google"

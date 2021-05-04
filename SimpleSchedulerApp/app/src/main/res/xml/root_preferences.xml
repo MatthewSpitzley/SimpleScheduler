@@ -33,11 +33,14 @@
             />
     </PreferenceCategory>
     <PreferenceCategory app:title="Notifications">
+        <!-- Late Notifications -->
         <SwitchPreference
             app:key="LateNotifications"
             app:title="Would you like to receive notifications for tasks that are late?"
             app:defaultValue="true"
             />
+
+        <!-- Notification times -->
         <ListPreference
             app:key="NotificationTiming"
             app:title="Late Notification Timing"
@@ -47,11 +50,14 @@
             app:summary="How much time prior would you like to receive notifications for upcoming tasks?"
             />
 
+        <!-- Email notifications -->
         <SwitchPreference
             app:key="NotificationEmail"
             app:title="Would you like to receive email notifications"
             app:defaultValue="false"
             />
+
+        <!-- Push notifications -->
         <SwitchPreference
             app:key="NotificationPush"
             app:title="Would you like to receive push notifications"
