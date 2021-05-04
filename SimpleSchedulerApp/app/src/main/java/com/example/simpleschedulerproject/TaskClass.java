@@ -103,7 +103,7 @@ public class TaskClass {
     }
 }
 
-/**enum Recur {
+enum Recur {
     DAILY("Daily"),
     WEEKDAYS("Weekdays"),
     WEEKLY("Weekly"),
@@ -121,4 +121,3 @@ public class TaskClass {
         return recur;
     }
 }
-*/
