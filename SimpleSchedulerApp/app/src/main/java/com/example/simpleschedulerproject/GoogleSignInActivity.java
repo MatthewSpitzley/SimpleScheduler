@@ -15,7 +15,6 @@ import com.google.android.gms.tasks.Task;
 
 public class GoogleSignInActivity extends AppCompatActivity {
     SignInButton signInButton;
-    /*private GoogleApiClient googleApiClient;*/
     private static final int SIGN_IN = 1;
     private GoogleSignInClient mGoogleSignInClient;
 

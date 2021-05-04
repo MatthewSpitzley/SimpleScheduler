@@ -2,8 +2,9 @@ package com.example.simpleschedulerproject;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.preference.PreferenceManager;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -22,7 +23,6 @@ import android.content.Context;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -50,10 +50,6 @@ public class TaskList extends AppCompatActivity {
 
         settingsBtn = findViewById(R.id.settingsButton);
         signInBtn = findViewById(R.id.sign_in_button);
-
-
-
-
 
         settingsBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -138,7 +134,9 @@ public class TaskList extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
+        Boolean emailNoti = sharedPreferences.getBoolean("NotificationEmail", false);
+        Boolean pushNoti = sharedPreferences.getBoolean("NotificationPush", false);
         switch (item.getItemId()) {
             case R.id.action_add_task:
                 final EditText taskEditText = new EditText(this);
@@ -155,13 +153,22 @@ public class TaskList extends AppCompatActivity {
                 layout.addView(timeEditText);
                 final EditText recurEditText = new EditText(this);
                 recurEditText.setHint("Recurrence");
-                layout.addView(recurEditText);
                 final EditText emailET = new EditText(this);
-                emailET.setHint("Email Notifications?");
-                layout.addView(emailET);
+                if(!emailNoti){
+                    emailET.setText("No");
+                }
+                else{
+                    emailET.setHint("Email Notifications?");
+                    layout.addView(emailET);
+                }
                 final EditText pushET = new EditText(this);
-                pushET.setHint("Push Notifications?");
-                layout.addView(pushET);
+                if(!pushNoti){
+                    pushET.setText("No");
+                }
+                else{
+                    pushET.setHint("Push Notifications?");
+                    layout.addView(pushET);
+                }
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Add a new task")
                         .setView(layout)

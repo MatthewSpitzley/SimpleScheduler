@@ -141,6 +141,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return returnList;
     }
 
+    //get all task list
     public List<TaskClass> getTaskList() {
         List<TaskClass> returnList = new ArrayList<>();
 
@@ -161,6 +162,81 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 TaskClass newTask = new TaskClass(name, category, time, recur, email, push, complete);
                 returnList.add(newTask);
+            } while (cursor.moveToNext());
+        }
+        else {
+            //Failure. Nothing is added to returnList.
+        }
+
+        cursor.close();
+        db.close();
+        return returnList;
+    }
+
+    //get task list of given day
+    public List<TaskClass> getTaskList(ZonedDateTime calendarDate) {
+        List<TaskClass> returnList = new ArrayList<>();
+
+        String queryString = "SELECT * FROM " + TASK_TABLE;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                ZonedDateTime time = ZonedDateTime.parse(cursor.getString(2));
+                if(time.getDayOfMonth() == calendarDate.getDayOfMonth() && time.getMonth() == calendarDate.getMonth() && time.getYear() == calendarDate.getYear()){
+                    String name = cursor.getString(0);
+                    Category category = new Category(cursor.getString(1));
+                    Recur recur = Recur.valueOf(cursor.getString(3));
+                    ZonedDateTime email = ZonedDateTime.parse(cursor.getString(4));
+                    ZonedDateTime push = ZonedDateTime.parse(cursor.getString(5));
+                    boolean complete = cursor.getInt(6) == 1 ? true: false;
+
+                    TaskClass newTask = new TaskClass(name, category, time, recur, email, push, complete);
+                    returnList.add(newTask);
+                }
+                else{
+                    //Failure. Task was not in the same calendar month/day/year
+                }
+            } while (cursor.moveToNext());
+        }
+        else {
+            //Failure. Nothing is added to returnList.
+        }
+
+        cursor.close();
+        db.close();
+        return returnList;
+    }
+
+    //get task list of no dates
+    public List<TaskClass> getTaskList(String noDate) {
+        List<TaskClass> returnList = new ArrayList<>();
+
+        String queryString = "SELECT * FROM " + TASK_TABLE;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                ZonedDateTime time = ZonedDateTime.parse(cursor.getString(2));
+                if(time == null){
+                    String name = cursor.getString(0);
+                    Category category = new Category(cursor.getString(1));
+                    Recur recur = Recur.valueOf(cursor.getString(3));
+                    ZonedDateTime email = ZonedDateTime.parse(cursor.getString(4));
+                    ZonedDateTime push = ZonedDateTime.parse(cursor.getString(5));
+                    boolean complete = cursor.getInt(6) == 1 ? true: false;
+
+                    TaskClass newTask = new TaskClass(name, category, time, recur, email, push, complete);
+                    returnList.add(newTask);
+                }
+                else{
+                    //Failure. Task has a date
+                }
+
             } while (cursor.moveToNext());
         }
         else {
