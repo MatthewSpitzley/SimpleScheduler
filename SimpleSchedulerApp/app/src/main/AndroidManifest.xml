@@ -16,13 +16,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleSchedulerProject">
-        <activity android:name=".ProfileActivity"></activity>
+        <activity
+            android:name=".ProfileActivity"
+            android:label="Profile Information"/>
         <activity
             android:name=".GoogleSignInActivity"
-            android:label="@string/title_activity_google_sign_in"></activity>
+            android:label="Google Sign In"></activity>
         <activity
             android:name=".LauncherFakeActivity"
-            android:label="@string/title_activity_launcher_fake">
+            android:label="LauncherSystem">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -30,14 +32,19 @@
         </activity>
         <activity
             android:name=".CalendarScreen"
-            android:label="@string/title_activity_calendar_screen" />
-        <activity android:name=".History" />
+            android:label="Calendar" />
+        <activity
+            android:name=".History"
+            android:label="History"/>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" />
-        <activity android:name=".MainActivity" />
+            android:label="Settings" />
+        <activity
+            android:name=".MainActivity"
+            android:label="Task List"/>
 
-        <provider android:name="DBProvider"
+        <provider
+            android:name="DBProvider"
             android:authorities="com.jumpmind.symmetric.DbProvider"
             android:exported="false">
             <grant-uri-permission android:pathPattern=".*" />

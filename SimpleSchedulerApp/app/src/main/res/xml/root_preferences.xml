@@ -59,12 +59,4 @@
             />
     </PreferenceCategory>
 
-    <!--<PreferenceCategory app:title="@string/GoogleSignIn">
-        <Preference
-            app:title="Google Sign In"
-            app:key="@string/GoogleSignIn"
-            app:summary="Sign into your Google account to synchronize your data through multiple devices"
-            />
-    </PreferenceCategory>-->
-
 </PreferenceScreen>

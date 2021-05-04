@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".LauncherFakeActivity">
 
+    <!--Task List Screen Button-->
     <Button
         android:id="@+id/TaskListScreen"
         android:layout_width="170dp"
@@ -19,6 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--Calendar Screen Button-->
     <Button
         android:id="@+id/CalendarScreen"
         android:layout_width="170dp"

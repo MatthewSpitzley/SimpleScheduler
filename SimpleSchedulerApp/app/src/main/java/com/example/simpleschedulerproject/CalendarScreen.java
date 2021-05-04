@@ -5,27 +5,19 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.ListPreference;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import android.content.SharedPreferences;
-import java.util.prefs.Preferences;
 import java.util.Date;
-import java.time.temporal.TemporalAccessor;
-import android.widget.ImageButton;
 import android.view.MotionEvent;
 
 public class CalendarScreen extends AppCompatActivity {
@@ -35,7 +27,6 @@ public class CalendarScreen extends AppCompatActivity {
     private Button noDate;
     private ImageButton settingsBtn;
     private Button signInBtn;
-    private TextView mTextView;
     private int selectedYear;
     private int selectedMonth;
     private int selectedDayOfMonth;
@@ -68,14 +59,15 @@ public class CalendarScreen extends AppCompatActivity {
         selectedDayOfMonth = ldt.getDayOfMonth();
         dateView.setText(df.format(ldt));
 
+        //Similar to onSelectedDayChange, except for tasks that have no date
         noDate.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                //Show the list of tasks that have no date
+                dateView.setText("No Date");
             }
         });
 
-        //When the user selects the settings button this will open the root_preferences
+        //When the user selects the settings button this will open the root_preferences.xml
         settingsBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -84,6 +76,7 @@ public class CalendarScreen extends AppCompatActivity {
             }
         });
 
+        //When the user selects the sign in button this will open the GoogleSignIn.xml
         signInBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -92,12 +85,16 @@ public class CalendarScreen extends AppCompatActivity {
             }
         });
 
+        //When the user selects a new date on the calendar it will update the UI accordingly
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth){
+                //update the selected day for other methods to use
                 selectedYear = year;
                 selectedMonth = month+1;
                 selectedDayOfMonth = dayOfMonth;
+
+                //Based on root_preferences change the output of the date at the top
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(calendar.getContext() /* Activity context */);
                 int dateDisplayFormat = Integer.valueOf(sharedPreferences.getString("DateChoices", ""));
                 String dateString = dayOfMonth + "/" + (month+1) + "/" + year;
@@ -113,10 +110,13 @@ public class CalendarScreen extends AppCompatActivity {
                 dateView.setText(formattedDate);
             }
         });
-
-        mTextView = (TextView) findViewById(R.id.text);
-
     }
+
+    /*
+     * When the activity is resumed:
+     *      update any new tasks
+     *      or any change in formatting from the root preferences
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -132,9 +132,12 @@ public class CalendarScreen extends AppCompatActivity {
             e.printStackTrace();
         }
         String formattedDate = targetFormat.format(date);
-        dateView.setText(formattedDate);
+        if(dateView.getText()!="No Date"){
+            dateView.setText(formattedDate);
+        }
     }
 
+    //Change the current activity based on the beginning and ending location of the finger
     float xBegin;
     float xEnd;
     public boolean onTouchEvent(MotionEvent touchEvent){

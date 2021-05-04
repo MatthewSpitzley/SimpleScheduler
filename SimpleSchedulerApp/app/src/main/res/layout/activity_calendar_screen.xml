@@ -38,6 +38,7 @@
         android:layout_centerHorizontal="true"
         android:textAllCaps="false"/>
 
+    <!-- Add Settings Button-->
     <ImageButton
         android:id="@+id/settings"
         android:layout_width="70dp"
@@ -46,6 +47,7 @@
         android:src="@drawable/gear"
         android:layout_alignParentEnd="true"/>
 
+    <!-- Add Sign in Button-->
     <Button
         android:id="@+id/sign_in_button"
         android:text="Sign in with Google"
