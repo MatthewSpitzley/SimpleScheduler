@@ -19,36 +19,36 @@ public class Settings {
 
    //allows the user to change the time before a task occurs to send a reminder notification
     public int notificationTiming(int x){
-        int n = 60;
+        int timing = 60;
 
         switch(x) {
             default:
-                n=0;
+                timing=0;
                 break;
             case 0:
-                n = 0;
+                timing = 0;
                 break;
             case 1:
-                n = 15;
+                timing = 15;
                 break;
             case 2:
-                n = 30;
+                timing = 30;
                 break;
             case 3:
-                n = 45;
+                timing = 45;
                 break;
             case 4:
-                n = 60;
+                timing = 60;
                 break;
             case 5:
-                n = 90;
+                timing = 90;
                 break;
             case 6:
-                n = 120;
+                timing = 120;
                 break;
         }
 
-        return n;
+        return timing;
     }
 
     //user changes how they prefer to see dates displayed

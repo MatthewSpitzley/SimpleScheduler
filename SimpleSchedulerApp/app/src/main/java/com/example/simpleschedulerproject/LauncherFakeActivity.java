@@ -23,7 +23,7 @@ public class LauncherFakeActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
         Boolean mainLauncher = sharedPreferences.getBoolean("MainScreen", false);
         if(!mainLauncher) {
-            Intent i = new Intent(LauncherFakeActivity.this, MainActivity.class);
+            Intent i = new Intent(LauncherFakeActivity.this, TaskList.class);
             startActivity(i);
             finish();
         }
@@ -46,7 +46,7 @@ public class LauncherFakeActivity extends AppCompatActivity {
         taskListBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent i = new Intent(LauncherFakeActivity.this, MainActivity.class);
+                Intent i = new Intent(LauncherFakeActivity.this, TaskList.class);
                 startActivity(i);
                 finish();
             }

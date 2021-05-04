@@ -40,7 +40,7 @@
             android:name=".SettingsActivity"
             android:label="Settings" />
         <activity
-            android:name=".MainActivity"
+            android:name=".TaskList"
             android:label="Task List"/>
 
         <provider

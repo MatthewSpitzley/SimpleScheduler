@@ -1,39 +1,26 @@
 package com.example.simpleschedulerproject;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.TimePickerDialog;
-import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Button;
 import android.content.Intent;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.content.Context;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
-
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.prefs.Preferences;
 
-public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
+public class TaskList extends AppCompatActivity {
+    private static final String TAG = "TaskList";
 
     private ImageButton settingsBtn;
     private Button signInBtn, addTaskBtn;
@@ -61,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         addTaskBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, AddTask.class);
+                Intent i = new Intent(TaskList.this, AddTask.class);
                 startActivity(i);
             }
         });
@@ -69,14 +56,14 @@ public class MainActivity extends AppCompatActivity {
         settingsBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+                Intent i = new Intent(TaskList.this, SettingsActivity.class);
                 startActivity(i);
             }
         });
         signInBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent i = new Intent(MainActivity.this, GoogleSignInActivity.class);
+                Intent i = new Intent(TaskList.this, GoogleSignInActivity.class);
                 startActivity(i);
             }
         });
@@ -98,14 +85,14 @@ public class MainActivity extends AppCompatActivity {
                 //if the start is less than the end
                 if(xBegin < xEnd){
                     //swipe left
-                    Intent i = new Intent(MainActivity.this, History.class);
+                    Intent i = new Intent(TaskList.this, History.class);
                     startActivity(i);
                     finish();
                 }
                 //if the start is greater than the end
                 else{
                     //swipe right
-                    Intent i = new Intent(MainActivity.this, CalendarScreen.class);
+                    Intent i = new Intent(TaskList.this, CalendarScreen.class);
                     startActivity(i);
                     finish();
                 }
@@ -197,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
                                         Calendar mCurrentTime = Calendar.getInstance();
                                         int hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
                                         int minute = mCurrentTime.get(Calendar.MINUTE);
-                                        TimePickerDialog mTimePicker = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                                        TimePickerDialog mTimePicker = new TimePickerDialog(TaskList.this, new TimePickerDialog.OnTimeSetListener() {
                                             @Override
                                             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                                                 timeEditText.setText(selectedHour + ":" + selectedMinute);

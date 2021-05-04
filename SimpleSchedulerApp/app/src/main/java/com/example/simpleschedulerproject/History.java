@@ -34,7 +34,7 @@ public class History extends AppCompatActivity {
                 //if the start is greater than the end
                 else{
                     //swipe right
-                    Intent i = new Intent(History.this, MainActivity.class);
+                    Intent i = new Intent(History.this, TaskList.class);
                     startActivity(i);
                     finish();
                 }

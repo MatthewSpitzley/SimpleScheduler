@@ -27,7 +27,6 @@
         android:layout_height="110dp"
         android:layout_marginStart="124dp"
         android:layout_marginTop="408dp"
-
         android:text="Calendar Screen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

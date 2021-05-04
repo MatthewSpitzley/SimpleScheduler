@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
 
 import java.time.ZonedDateTime;
-import java.util.prefs.Preferences;
 
 public class TaskClass {
     private String name;
@@ -16,7 +15,7 @@ public class TaskClass {
     private ZonedDateTime push;
     private boolean complete;
     private Settings settings;
-    private MainActivity main;
+    private TaskList main;
 
     public TaskClass(String name, Category category, ZonedDateTime time, Recur recur, ZonedDateTime email, ZonedDateTime push, boolean complete) {
         this.name = name;

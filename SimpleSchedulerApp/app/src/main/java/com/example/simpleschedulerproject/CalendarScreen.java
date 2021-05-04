@@ -153,7 +153,7 @@ public class CalendarScreen extends AppCompatActivity {
                 //if the start is less than the end
                 if(xBegin < xEnd){
                     //swipe left
-                    Intent i = new Intent(CalendarScreen.this, MainActivity.class);
+                    Intent i = new Intent(CalendarScreen.this, TaskList.class);
                     startActivity(i);
                     finish();
                 }
