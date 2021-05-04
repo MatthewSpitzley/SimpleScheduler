@@ -151,8 +151,9 @@ public class TaskList extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
-        Boolean emailNoti = sharedPreferences.getBoolean("NotificationEmail", false);
-        Boolean pushNoti = sharedPreferences.getBoolean("NotificationPush", false);
+        Boolean emailNotificationSetting = sharedPreferences.getBoolean("NotificationEmail", false);
+        Boolean pushNotificationSetting = sharedPreferences.getBoolean("NotificationPush", false);
+        Boolean hourFormatSetting = sharedPreferences.getBoolean("HourFormat", false);
             switch (item.getItemId()) {
             case R.id.action_add_task:
                 final EditText taskEditText = new EditText(this);
@@ -187,7 +188,7 @@ public class TaskList extends AppCompatActivity {
                                             formattedMinutes = "0" + sMinute;
                                         timeEditText.setText(formattedHour + ":" + formattedMinutes);
                                     }
-                                }, hour, minutes, true);
+                                }, hour, minutes, hourFormatSetting);
                         tPicker.show();
                     }
                 });
@@ -229,7 +230,7 @@ public class TaskList extends AppCompatActivity {
                 recurEditText.setHint("Recurrence");
                 layout.addView(recurEditText);
                 final EditText emailET = new EditText(this);
-                if(!emailNoti){
+                if(!emailNotificationSetting){
                     emailET.setText("No");
                 }
                 else{
@@ -237,7 +238,7 @@ public class TaskList extends AppCompatActivity {
                     layout.addView(emailET);
                 }
                 final EditText pushET = new EditText(this);
-                if(!pushNoti){
+                if(!pushNotificationSetting){
                     pushET.setText("No");
                 }
                 else{
@@ -259,8 +260,8 @@ public class TaskList extends AppCompatActivity {
                                 String date = String.valueOf(dateEditText.getText());
                                 String timeDate = new String(date + " " + time + ":00 CST");
 
-                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss z");
-                                 ZonedDateTime dateTime = ZonedDateTime.parse(timeDate, formatter);
+                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss z");
+                                ZonedDateTime dateTime = ZonedDateTime.parse(timeDate, formatter);
 
                                 String recur = String.valueOf(recurEditText.getText());
                                 Recur recurEnum = Recur.DAILY;
