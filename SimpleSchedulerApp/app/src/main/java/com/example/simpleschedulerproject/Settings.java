@@ -4,17 +4,17 @@ import java.time.format.DateTimeFormatter;
 
 public class Settings {
     //changes between 12 and 24 hour times
-    public static DateTimeFormatter toggleTime(boolean x){
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("hh:mm aa");
+    public static String toggleTime(boolean x){
+        String timeFormat = "hh:mm aa";
         if(!x){
             //12 hr
-            df = DateTimeFormatter.ofPattern("hh:mm aa");
+            timeFormat = "hh:mm aa";
         }
         else{
             //24 hr
-            df = DateTimeFormatter.ofPattern("HH:mm");
+            timeFormat = "HH:mm";
         }
-        return df;
+        return timeFormat;
     }
 
    //allows the user to change the time before a task occurs to send a reminder notification

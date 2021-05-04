@@ -32,11 +32,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -150,12 +153,14 @@ public class TaskList extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    String timeFormatted = "";
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
         Boolean emailNotificationSetting = sharedPreferences.getBoolean("NotificationEmail", false);
         Boolean pushNotificationSetting = sharedPreferences.getBoolean("NotificationPush", false);
         Boolean hourFormatSetting = sharedPreferences.getBoolean("HourFormat", false);
+
             switch (item.getItemId()) {
             case R.id.action_add_task:
                 final EditText taskEditText = new EditText(this);
@@ -214,7 +219,23 @@ public class TaskList extends AppCompatActivity {
                                             formattedHour = "0" + hour;
                                         if(minutes < 10)
                                             formattedMinutes = "0" + minutes;
-                                        timeEditText.setText(formattedHour + ":" + formattedMinutes);
+                                        timeFormatted = formattedHour + ":" + formattedMinutes;
+                                        if(hourFormatSetting){
+                                            timeEditText.setText(timeFormatted);
+                                        }
+                                        else{
+                                            DateFormat originalFormat = new SimpleDateFormat("HH:mm");
+                                            DateFormat targetFormat = new SimpleDateFormat(settings.toggleTime(hourFormatSetting));
+                                            Date date = null;
+                                            try {
+                                                date = originalFormat.parse(timeFormatted);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            String updateFormattedTime = targetFormat.format(date);
+                                            timeEditText.setText(updateFormattedTime);
+                                        }
+
                                     }
                                 }, hour, minutes, hourFormatSetting);
                         tPicker.show();
@@ -284,7 +305,7 @@ public class TaskList extends AppCompatActivity {
                                 String cat = String.valueOf(catEditText.getText());
                                 Category category = new Category(cat);
 
-                                String time = String.valueOf(timeEditText.getText());
+                                String time = String.valueOf(timeFormatted);
                                 String date = String.valueOf(dateEditText.getText());
                                 String timeDate = new String(date + " " + time + ":00 CST");
 
