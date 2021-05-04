@@ -1,11 +1,26 @@
 package com.example.simpleschedulerproject;
 
+import android.app.VoiceInteractor;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -115,6 +130,176 @@ public class DBHelper extends SQLiteOpenHelper {
             return false;
         }
     }
+
+    public void fetchCategoriesParse(Context context, RequestQueue mQueue) {
+        String url = "http://localhost/fetchCategories.php";
+        DBHelper mHelper = new DBHelper(context);
+
+        JsonObjectRequest request = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("categories");
+
+                            for(int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject category = jsonArray.getJSONObject(i);
+
+                                String category_name = category.getString("category");
+
+                                mHelper.addCategory(new Category(category_name));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+
+        mQueue.add(request);
+    }
+
+    public void fetchTasksParse(Context context, RequestQueue mQueue, DBHelper mHelper) {
+        String url = "http://localhost/fetchTasks.php";
+
+        JsonObjectRequest request = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("tasks");
+
+                            for(int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject task = jsonArray.getJSONObject(i);
+
+                                String task_name = task.getString("task_name");
+                                Category category = new Category(task.getString("category"));
+                                ZonedDateTime time = ZonedDateTime.parse(task.getString("time"));
+                                Recur recur = Recur.valueOf(task.getString("recur"));
+                                ZonedDateTime email = ZonedDateTime.parse(task.getString("email_notification"));
+                                ZonedDateTime push = ZonedDateTime.parse(task.getString("push_notification"));
+                                boolean complete = task.getInt("completed") == 1;
+
+                                mHelper.addTask(new TaskClass(task_name, category, time, recur, email, push, complete));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+
+        mQueue.add(request);
+    }
+
+    /*private void syncCategoriesParse() {
+        List<Category> categories = getCategoryList();
+
+        String jsonData = "{";
+        for(int i = 0; i < categories.size(); i++) {
+            jsonData += "\"category\"" + categories.get(i).getName() + "\",";
+        }
+        jsonData += "}";
+
+        syncCategoriesHelper(jsonData);
+    }
+
+    private void syncCategoriesHelper(String jsonData) {
+        String url = "http://localhost/syncCategories.php";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return jsonData == null ? null : jsonData.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    return null;
+                }
+            }
+
+        };
+
+        mQueue.add(stringRequest);
+    }
+
+    private void syncTasksParse() {
+        TaskClass task = new TaskClass("test_task123", null, null, null, null, null, false);
+        String jsonData = "{"+
+                "\"task_name\"" + task.getName() + "\","+
+                "\"category\"" + task.getCategory().getName() + "\","+
+                "\"time\"" + task.getTime().toString() + "\","+
+                "\"recur\"" + task.getRecur().toString() + "\","+
+                "\"email_notification\"" + task.getEmail().toString() + "\","+
+                "\"push_notification\"" + task.getPush().toString() + "\","+
+                "\"completed\"" + task.isComplete() + "\","+
+                "}";
+
+        syncTasksHelper(jsonData);
+    }
+
+    private void syncTasksHelper(String jsonData) {
+        String url = "http://localhost/syncTasks.php";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return jsonData == null ? null : jsonData.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    return null;
+                }
+            }
+
+        };
+
+        mQueue.add(stringRequest);
+    }*/
 
     public List<Category> getCategoryList() {
         List<Category> returnList = new ArrayList<>();
