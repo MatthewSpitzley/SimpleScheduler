@@ -41,10 +41,6 @@ public class DBHelper extends SQLiteOpenHelper {
         super(context, "scheduler.db", null, 1);
     }
 
-    /**
-     * Called when the SQLite DB is first created.
-     * @param db database
-     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createCategoryTableStatement = "CREATE TABLE " + CATEGORY_TABLE + " ( " + COLUMN_CATEGORY_NAME + " TEXT PRIMARY KEY );";
@@ -54,12 +50,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(createTaskTableStatement);
     }
 
-    /**
-     * Called when the version number changes.
-     * @param db database
-     * @param oldVersion old database version
-     * @param newVersion new database version
-     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + CATEGORY_TABLE);
@@ -127,9 +117,8 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void fetchCategoriesParse(Context context, RequestQueue mQueue) {
+    public void fetchCategoriesParse(RequestQueue mQueue, DBHelper mHelper) {
         String url = "http://localhost/fetchCategories.php";
-        DBHelper mHelper = new DBHelper(context);
 
         JsonObjectRequest request = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
