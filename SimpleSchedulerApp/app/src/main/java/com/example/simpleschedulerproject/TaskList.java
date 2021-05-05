@@ -405,8 +405,6 @@ public class TaskList extends AppCompatActivity {
                             else
                                 continue;
                         }*/
-
-                         */
                         String task = String.valueOf(taskTextView.getText());
                         SQLiteDatabase db = mHelper.getWritableDatabase();
                         db.delete(DBHelper.TASK_TABLE,
