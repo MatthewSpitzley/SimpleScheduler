@@ -343,14 +343,25 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString, null);
 
+        Category category = null;
+        ZonedDateTime time = null;
+        Recur recur = null;
+        ZonedDateTime email = null;
+        ZonedDateTime push = null;
+
         if(cursor.moveToFirst()) {
             do {
                 String name = cursor.getString(0);
-                Category category = new Category(cursor.getString(1));
-                ZonedDateTime time = ZonedDateTime.parse(cursor.getString(2));
-                Recur recur = Recur.valueOf(cursor.getString(3));
-                ZonedDateTime email = ZonedDateTime.parse(cursor.getString(4));
-                ZonedDateTime push = ZonedDateTime.parse(cursor.getString(5));
+                if(cursor.getString(1) != null)
+                    category = new Category(cursor.getString(1));
+                if(cursor.getString(2) != null)
+                    time = ZonedDateTime.parse(cursor.getString(2));
+                if(cursor.getString(3) != null)
+                    recur = Recur.valueOf(cursor.getString(3));
+                if(cursor.getString(4) != null)
+                    email = ZonedDateTime.parse(cursor.getString(4));
+                if(cursor.getString(5) != null)
+                    push = ZonedDateTime.parse(cursor.getString(5));
                 boolean complete = cursor.getInt(6) == 1;
 
                 TaskClass newTask = new TaskClass(name, category, time, recur, email, push, complete);
