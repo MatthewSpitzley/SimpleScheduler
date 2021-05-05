@@ -180,8 +180,8 @@ public class CalendarScreen extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
-        Boolean emailNotificationSetting = sharedPreferences.getBoolean("NotificationEmail", false);
-        Boolean pushNotificationSetting = sharedPreferences.getBoolean("NotificationPush", false);
+        //Boolean emailNotificationSetting = sharedPreferences.getBoolean("NotificationEmail", false);
+        //Boolean pushNotificationSetting = sharedPreferences.getBoolean("NotificationPush", false);
         Boolean hourFormatSetting = sharedPreferences.getBoolean("HourFormat", false);
 
         switch (item.getItemId()) {
