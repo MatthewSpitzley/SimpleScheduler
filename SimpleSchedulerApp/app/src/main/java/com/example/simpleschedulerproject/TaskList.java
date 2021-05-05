@@ -48,7 +48,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import okhttp3.OkHttpClient;
+//import okhttp3.OkHttpClient;
 
 public class TaskList extends AppCompatActivity {
     private static final String TAG = "TaskList";
@@ -57,7 +57,7 @@ public class TaskList extends AppCompatActivity {
     private Button signInBtn, addTaskBtn;
     private DBHelper mHelper;
     private RequestQueue mQueue;
-    private OkHttpClient client;
+    //private OkHttpClient client;
     private ListView mTaskList;
     private ArrayAdapter<String> mAdapter;
     private Settings settings;
@@ -172,6 +172,9 @@ public class TaskList extends AppCompatActivity {
     String timeFormatted = "";
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i = new Intent(TaskList.this,AddTaskActivity.class);
+        startActivity(i);
+        finish();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
         Boolean emailNotificationSetting = sharedPreferences.getBoolean("NotificationEmail", false);
         Boolean pushNotificationSetting = sharedPreferences.getBoolean("NotificationPush", false);
