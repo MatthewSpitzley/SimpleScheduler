@@ -190,7 +190,6 @@ public class TaskList extends AppCompatActivity {
                                             public void onClick(DialogInterface catOptionsDialog, int which) {
                                                 catEditText.setText(catOpt[which]);
                                                 }
-
                                         });
                         AlertDialog dialogCat = catOptionsDialog.create();
                         dialogCat.show();
@@ -384,9 +383,22 @@ public class TaskList extends AppCompatActivity {
                 .setPositiveButton("Complete", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        //your deleting code
+                        //changing completion status and removing from task list
                         View parent = (View) view.getParent();
                         TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
+                        ArrayList<TaskClass> tList = mHelper.getTaskList();
+                        TaskClass histTask;
+                        String mTask = String.valueOf(taskTextView.getText());
+                        for(int i = 0; i < tList.size(); i++) {
+                            if(mTask == tList.get(i).getName()) {
+                                histTask = new TaskClass(tList.get(i).getName(), tList.get(i).getCategory(),
+                                        tList.get(i).getTime(), tList.get(i).getRecur(), tList.get(i).getEmail(),
+                                        tList.get(i).getPush(), true);
+                                mHelper.addTask(histTask);
+                            }
+                            else
+                                continue;
+                        }
                         String task = String.valueOf(taskTextView.getText());
                         SQLiteDatabase db = mHelper.getWritableDatabase();
                         db.delete(DBHelper.TASK_TABLE,
@@ -414,17 +426,5 @@ public class TaskList extends AppCompatActivity {
         AlertDialog dialogCheck = AskOption(view);
         dialogCheck.show();
         updateUI();
-        /*
-        View parent = (View) view.getParent();
-        TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
-        String task = String.valueOf(taskTextView.getText());
-        SQLiteDatabase db = mHelper.getWritableDatabase();
-        db.delete(DBHelper.TASK_TABLE,
-                DBHelper.COLUMN_TASK_NAME + " = ?",
-                new String[]{task});
-        db.close();
-        updateUI();
-
-         */
     }
 }
