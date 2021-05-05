@@ -171,7 +171,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void fetchTasksParse(RequestQueue mQueue, DBHelper mHelper) {
-        String url = "https://192.168.1.5/fetchTasks.php";
+        String url = "https://localhost/fetchTasks.php";
 
         JsonArrayRequest request = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -209,11 +209,16 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private void syncCategoriesParse(RequestQueue mQueue) {
-        List<Category> categories = getCategoryList();
+        ArrayList<Category> categories = getCategoryList();
 
         String jsonData = "{";
         for(int i = 0; i < categories.size(); i++) {
-            jsonData += "\"category\"" + categories.get(i).getName() + "\",";
+            if(i != categories.size() - 1){
+                jsonData += "\"category\":\"" + categories.get(i).getName() + "\",";
+            }
+            else {
+                jsonData += "\"category\":" + categories.get(i).getName() + "\"";
+            }
         }
         jsonData += "}";
 
@@ -258,16 +263,30 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private void syncTasksParse(RequestQueue mQueue) {
-        TaskClass task = new TaskClass("test_task123", null, null, null, null, null, false);
-        String jsonData = "{"+
-                "\"task_name\"" + task.getName() + "\","+
-                "\"category\"" + task.getCategory().getName() + "\","+
-                "\"time\"" + task.getTime().toString() + "\","+
-                "\"recur\"" + task.getRecur().toString() + "\","+
-                "\"email_notification\"" + task.getEmail().toString() + "\","+
-                "\"push_notification\"" + task.getPush().toString() + "\","+
-                "\"completed\"" + task.isComplete() + "\","+
-                "}";
+        ArrayList<TaskClass> tasks = getTaskList();
+
+        String jsonData = "{";
+        for(int i = 0; i < tasks.size(); i++) {
+            if(i != tasks.size() - 1) {
+                jsonData += "\"task_name\":\"" + tasks.get(i).getName() + "\"," +
+                        "\"category\":\"" + tasks.get(i).getCategory().getName() + "\"," +
+                        "\"time\":\"" + tasks.get(i).getTime().toString() + "\"," +
+                        "\"recur\":\"" + tasks.get(i).getRecur().toString() + "\"," +
+                        "\"email_notification\":\"" + tasks.get(i).getEmail().toString() + "\"," +
+                        "\"push_notification\":\"" + tasks.get(i).getPush().toString() + "\"," +
+                        "\"completed\":\"" + tasks.get(i).isComplete() + "\",";
+            }
+            else {
+                jsonData += "\"task_name\":\"" + tasks.get(i).getName() + "\"," +
+                        "\"category\":\"" + tasks.get(i).getCategory().getName() + "\"," +
+                        "\"time\":\"" + tasks.get(i).getTime().toString() + "\"," +
+                        "\"recur\":\"" + tasks.get(i).getRecur().toString() + "\"," +
+                        "\"email_notification\":\"" + tasks.get(i).getEmail().toString() + "\"," +
+                        "\"push_notification\":\"" + tasks.get(i).getPush().toString() + "\"," +
+                        "\"completed\":\"" + tasks.get(i).isComplete() + "\"";
+            }
+        }
+        jsonData += "}";
 
         syncTasksHelper(jsonData, mQueue);
     }
