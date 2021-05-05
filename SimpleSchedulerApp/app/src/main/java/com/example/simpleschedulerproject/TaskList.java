@@ -48,6 +48,7 @@ public class TaskList extends AppCompatActivity {
     private TimePickerDialog tPicker;
     private DatePickerDialog dPicker;
     private TextView tView;
+    private Button addCategory;
 
 
     @Override
@@ -60,9 +61,7 @@ public class TaskList extends AppCompatActivity {
 
         settingsBtn = findViewById(R.id.settingsButton);
         signInBtn = findViewById(R.id.sign_in_button);
-
-
-
+        addCategory = findViewById(R.id.add_category);
 
 
         settingsBtn.setOnClickListener(new View.OnClickListener(){
@@ -76,6 +75,13 @@ public class TaskList extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent i = new Intent(TaskList.this, GoogleSignInActivity.class);
+                startActivity(i);
+            }
+        });
+        addCategory.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent i = new Intent(TaskList.this, AddCategoryActivity.class);
                 startActivity(i);
             }
         });

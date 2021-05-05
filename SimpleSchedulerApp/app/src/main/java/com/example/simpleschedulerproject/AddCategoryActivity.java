@@ -37,5 +37,13 @@ public class AddCategoryActivity extends AppCompatActivity {
                 finish();
             }
         });
+        backBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent i = new Intent(AddCategoryActivity.this, TaskList.class);
+                startActivity(i);
+                finish();
+            }
+        });
     }
 }
