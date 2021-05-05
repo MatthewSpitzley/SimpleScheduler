@@ -76,10 +76,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
         cv.put(COLUMN_TASK_NAME, task.getName());
         cv.put(COLUMN_TASK_CATEGORY, task.getCategory().getName());
-        cv.put(COLUMN_TASK_TIME, task.getTime().toString());
+        if(task.getTime() != null)
+            cv.put(COLUMN_TASK_TIME, task.getTime().toString());
         cv.put(COLUMN_TASK_RECUR, task.getRecur().toString());
-        cv.put(COLUMN_TASK_EMAIL_NOTIFICATION, task.getEmail().toString());
-        cv.put(COLUMN_TASK_PUSH_NOTIFICATION, task.getPush().toString());
+        if(task.getTime() != null)
+            cv.put(COLUMN_TASK_EMAIL_NOTIFICATION, task.getEmail().toString());
+        if(task.getTime() != null)
+            cv.put(COLUMN_TASK_PUSH_NOTIFICATION, task.getPush().toString());
         cv.put(COLUMN_TASK_COMPLETE, task.isComplete());
 
         long insert = db.insert(TASK_TABLE, null, cv);
