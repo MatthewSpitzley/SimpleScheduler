@@ -14,8 +14,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -167,18 +170,16 @@ public class DBHelper extends SQLiteOpenHelper {
         mQueue.add(request);
     }
 
-    public void fetchTasksParse(Context context, RequestQueue mQueue, DBHelper mHelper) {
+    public void fetchTasksParse(RequestQueue mQueue, DBHelper mHelper) {
         String url = "https://192.168.1.5/fetchTasks.php";
 
-        JsonObjectRequest request = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonArrayRequest request = new JsonArrayRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         try {
-                            JSONArray jsonArray = response.getJSONArray("tasks");
-
-                            for(int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject task = jsonArray.getJSONObject(i);
+                            for(int i = 0; i < response.length(); i++) {
+                                JSONObject task = response.getJSONObject(i);
 
                                 String task_name = task.getString("task_name");
                                 Category category = new Category(task.getString("category"));
@@ -207,7 +208,7 @@ public class DBHelper extends SQLiteOpenHelper {
         mQueue.add(request);
     }
 
-    /*private void syncCategoriesParse() {
+    private void syncCategoriesParse(RequestQueue mQueue) {
         List<Category> categories = getCategoryList();
 
         String jsonData = "{";
@@ -216,10 +217,10 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         jsonData += "}";
 
-        syncCategoriesHelper(jsonData);
+        syncCategoriesHelper(jsonData, mQueue);
     }
 
-    private void syncCategoriesHelper(String jsonData) {
+    private void syncCategoriesHelper(String jsonData, RequestQueue mQueue) {
         String url = "http://localhost/syncCategories.php";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -256,7 +257,7 @@ public class DBHelper extends SQLiteOpenHelper {
         mQueue.add(stringRequest);
     }
 
-    private void syncTasksParse() {
+    private void syncTasksParse(RequestQueue mQueue) {
         TaskClass task = new TaskClass("test_task123", null, null, null, null, null, false);
         String jsonData = "{"+
                 "\"task_name\"" + task.getName() + "\","+
@@ -268,10 +269,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 "\"completed\"" + task.isComplete() + "\","+
                 "}";
 
-        syncTasksHelper(jsonData);
+        syncTasksHelper(jsonData, mQueue);
     }
 
-    private void syncTasksHelper(String jsonData) {
+    private void syncTasksHelper(String jsonData, RequestQueue mQueue) {
         String url = "http://localhost/syncTasks.php";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -306,7 +307,7 @@ public class DBHelper extends SQLiteOpenHelper {
         };
 
         mQueue.add(stringRequest);
-    }*/
+    }
 
     public ArrayList<Category> getCategoryList() {
         ArrayList<Category> returnList = new ArrayList<>();

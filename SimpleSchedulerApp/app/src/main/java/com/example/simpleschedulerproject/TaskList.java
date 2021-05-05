@@ -133,10 +133,10 @@ public class TaskList extends AppCompatActivity {
     private void updateUI() {
         SQLiteDatabase db = mHelper.getReadableDatabase();
 
-        /*if(GoogleSignIn.getLastSignedInAccount(this) != null) {
+        if(GoogleSignIn.getLastSignedInAccount(this) != null) {
             mQueue = Volley.newRequestQueue(this);
-            mHelper.fetchTasksParse(this, mQueue, mHelper);
-        }*/
+            mHelper.fetchTasksParse(mQueue, mHelper);
+        }
 
         ArrayList<String> taskList = new ArrayList<>();
         Cursor cursor = db.query(DBHelper.TASK_TABLE,
