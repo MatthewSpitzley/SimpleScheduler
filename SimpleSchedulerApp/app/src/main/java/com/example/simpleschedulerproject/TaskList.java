@@ -285,7 +285,7 @@ public class TaskList extends AppCompatActivity {
                 recurEditText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String[] recurOpt = { "DAILY", "WEEKDAYS", "WEEKLY", "MONTHLY", "YEARLY" };
+                        String[] recurOpt = { "DAILY", "WEEKDAYS", "WEEKLY", "MONTHLY", "YEARLY", "NONE" };
                         AlertDialog.Builder recurOptionsDialog = new AlertDialog.Builder(TaskList.this);
                         recurOptionsDialog.setTitle("How often do you want notifications?");
                         recurOptionsDialog.setItems(recurOpt, new DialogInterface.OnClickListener() {
@@ -302,6 +302,7 @@ public class TaskList extends AppCompatActivity {
                                         break;
                                     case 4: recurEditText.setText("YEARLY");
                                         break;
+                                    case 5: recurEditText.setText("NONE");
                                 }
                             }
                         });
@@ -346,7 +347,7 @@ public class TaskList extends AppCompatActivity {
                                 ZonedDateTime dateTime = ZonedDateTime.parse(timeDate, formatter);
 
                                 String recur = String.valueOf(recurEditText.getText());
-                                Recur recurEnum = Recur.DAILY;
+                                Recur recurEnum = Recur.NONE;
                                 if(recur.equalsIgnoreCase("DAILY"))
                                     recurEnum = Recur.DAILY;
                                 if(recur.equalsIgnoreCase("WEEKDAYS"))
@@ -392,6 +393,7 @@ public class TaskList extends AppCompatActivity {
                         //changing completion status and removing from task list
                         View parent = (View) view.getParent();
                         TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
+                        /*
                         ArrayList<TaskClass> tList = mHelper.getTaskList();
                         TaskClass histTask;
                         String mTask = String.valueOf(taskTextView.getText());
@@ -405,6 +407,8 @@ public class TaskList extends AppCompatActivity {
                             else
                                 continue;
                         }
+
+                         */
                         String task = String.valueOf(taskTextView.getText());
                         SQLiteDatabase db = mHelper.getWritableDatabase();
                         db.delete(DBHelper.TASK_TABLE,
