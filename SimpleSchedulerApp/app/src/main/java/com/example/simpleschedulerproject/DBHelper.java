@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
-
+/*
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -16,7 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-
+*/
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +27,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
+//import okhttp3.OkHttpClient;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -134,7 +134,7 @@ public class DBHelper extends SQLiteOpenHelper {
             return false;
         }
     }
-
+/*
     public void fetchCategoriesParse(Context context, RequestQueue mQueue) {
         String url = "http://localhost/fetchCategories.php";
         DBHelper mHelper = new DBHelper(context);
