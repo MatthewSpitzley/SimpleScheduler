@@ -48,8 +48,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import okhttp3.OkHttpClient;
-
 public class TaskList extends AppCompatActivity {
     private static final String TAG = "TaskList";
 
@@ -57,7 +55,6 @@ public class TaskList extends AppCompatActivity {
     private Button signInBtn, addTaskBtn;
     private DBHelper mHelper;
     private RequestQueue mQueue;
-    private OkHttpClient client;
     private ListView mTaskList;
     private ArrayAdapter<String> mAdapter;
     private Settings settings;
