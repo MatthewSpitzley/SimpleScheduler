@@ -178,21 +178,19 @@ public class TaskList extends AppCompatActivity {
                 catEditText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String[] catOpt = { "Work", "School", "Personal" };
+                        ArrayList<Category> cList = mHelper.getCategoryList();
+                        String[] catOpt = new String[cList.size()];
+                        for(int i = 0; i < cList.size(); i++) {
+                            catOpt[i] = String.valueOf(cList.get(i));
+                        }
                         AlertDialog.Builder catOptionsDialog = new AlertDialog.Builder(TaskList.this);
                         catOptionsDialog.setTitle("Choose a category.");
                         catOptionsDialog.setItems(catOpt, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface catOptionsDialog, int which) {
-                                                switch(which) {
-                                                    case 0: catEditText.setText("Work");
-                                                    break;
-                                                    case 1: catEditText.setText("School");
-                                                    break;
-                                                    case 2: catEditText.setText("Personal");
-                                                    break;
+                                                catEditText.setText(catOpt[which]);
                                                 }
-                                            }
+
                                         });
                         AlertDialog dialogCat = catOptionsDialog.create();
                         dialogCat.show();
