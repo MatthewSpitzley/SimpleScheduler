@@ -156,7 +156,7 @@ public class TaskList extends AppCompatActivity {
     String timeFormatted = "";
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        /*Intent i = new Intent(TaskList.this,AddTaskActivity.class);
+        /*Intent i = new Intent(TaskList.this,AddCategoryActivity.class);
         startActivity(i);
         finish();*/
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
