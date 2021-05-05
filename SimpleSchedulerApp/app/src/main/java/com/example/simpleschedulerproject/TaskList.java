@@ -279,7 +279,7 @@ public class TaskList extends AppCompatActivity {
                     }
                 });
                 layout.addView(dateEditText);
-                final EditText recurEditText = new EditText(this);
+                /*final EditText recurEditText = new EditText(this);
                 recurEditText.setHint("Recurrence");
                 recurEditText.setInputType(InputType.TYPE_NULL);
                 recurEditText.setOnClickListener(new View.OnClickListener() {
@@ -310,7 +310,7 @@ public class TaskList extends AppCompatActivity {
                         dialogCat.show();
                     }
                 });
-                layout.addView(recurEditText);
+                layout.addView(recurEditText);*/
                 /*final EditText emailET = new EditText(this);
                 if(!emailNotificationSetting){
                     emailET.setText("No");
@@ -346,7 +346,7 @@ public class TaskList extends AppCompatActivity {
                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss z");
                                 ZonedDateTime dateTime = ZonedDateTime.parse(timeDate, formatter);
 
-                                String recur = String.valueOf(recurEditText.getText());
+                                /*String recur = String.valueOf(recurEditText.getText());
                                 Recur recurEnum = Recur.NONE;
                                 if(recur.equalsIgnoreCase("DAILY"))
                                     recurEnum = Recur.DAILY;
@@ -357,7 +357,7 @@ public class TaskList extends AppCompatActivity {
                                 if(recur.equalsIgnoreCase("MONTHLY"))
                                     recurEnum = Recur.MONTHLY;
                                 if(recur.equalsIgnoreCase("YEARLY"))
-                                    recurEnum = Recur.YEARLY;
+                                    recurEnum = Recur.YEARLY;*/
 
                                 //String email = String.valueOf(emailET.getText());
                                 ZonedDateTime dateTimeEmail = dateTime;
@@ -365,7 +365,7 @@ public class TaskList extends AppCompatActivity {
                                 //String push = String.valueOf(pushET.getText());
                                 ZonedDateTime dateTimePush = dateTime;
 
-                                TaskClass mTask = new TaskClass(task, category, dateTime, recurEnum, dateTimeEmail, dateTimePush, false);
+                                TaskClass mTask = new TaskClass(task, category, dateTime, Recur.DAILY, dateTimeEmail, dateTimePush, false);
                                 mHelper.addTask(mTask);
                                 updateUI();
                             }

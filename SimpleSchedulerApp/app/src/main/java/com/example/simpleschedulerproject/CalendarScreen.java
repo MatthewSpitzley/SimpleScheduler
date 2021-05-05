@@ -449,7 +449,61 @@ public class CalendarScreen extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    private AlertDialog AskOption(View view)
+    {
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
+                // set message, title, and icon
+                .setTitle("Complete")
+                .setMessage("Mark this task as complete?")
+                //.setIcon(R.drawable.delete)
+
+                .setPositiveButton("Complete", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //changing completion status and removing from task list
+                        View parent = (View) view.getParent();
+                        TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
+						/*ArrayList<TaskClass> tList = mHelper.getTaskList();                        TaskClass histTask;
+                        String mTask = String.valueOf(taskTextView.getText());
+                        for(int i = 0; i < tList.size(); i++) {
+                            if(mTask == tList.get(i).getName()) {
+                                histTask = new TaskClass(tList.get(i).getName(), tList.get(i).getCategory(),
+                                        tList.get(i).getTime(), tList.get(i).getRecur(), tList.get(i).getEmail(),
+                                        tList.get(i).getPush(), true);
+                                mHelper.addTask(histTask);
+                            }
+                            else
+                                continue;
+                        }*/
+                        String task = String.valueOf(taskTextView.getText());
+                        SQLiteDatabase db = mHelper.getWritableDatabase();
+                        db.delete(DBHelper.TASK_TABLE,
+                                DBHelper.COLUMN_TASK_NAME + " = ?",
+                                new String[]{task});
+                        //mHelper.addTask()
+                        db.close();
+                        updateUI();
+                        dialog.dismiss();
+                    }
+
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+
+        return myQuittingDialogBox;
+    }
     public void deleteTask(View view) {
+        AlertDialog dialogCheck = AskOption(view);
+        dialogCheck.show();
+        updateUI();
+    }
+    /*public void deleteTask(View view) {
         View parent = (View) view.getParent();
         TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
         String task = String.valueOf(taskTextView.getText());
@@ -459,7 +513,7 @@ public class CalendarScreen extends AppCompatActivity {
                 new String[]{task});
         db.close();
         updateUI();
-    }
+    }*/
 
     /*
      * When the activity is resumed:
