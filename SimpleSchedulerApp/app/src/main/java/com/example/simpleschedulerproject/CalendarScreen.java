@@ -301,7 +301,7 @@ public class CalendarScreen extends AppCompatActivity {
                 layout.addView(timeEditText);
                 final EditText dateEditText = new EditText(this);
                 dateEditText.setHint("Completion Date");
-                dateEditText.setInputType(InputType.TYPE_NULL);
+                //dateEditText.setInputType(InputType.TYPE_NULL);
                 String dateEditDefault = String.valueOf(dateEditText.getText());
                 dateEditText.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -395,16 +395,22 @@ public class CalendarScreen extends AppCompatActivity {
                                 String date = String.valueOf(dateEditText.getText());
                                 String timeDate = null;
                                 ZonedDateTime dateTime = null;
-                                if(true) {
-                                    Toast.makeText(CalendarScreen.this, date, Toast.LENGTH_SHORT).show();
+                                try{
                                     timeDate = new String(date + " " + time + ":00 CST");
 
                                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss z");
                                     dateTime = ZonedDateTime.parse(timeDate, formatter);
                                 }
+                                catch (Exception e){
+                                    e.getStackTrace();
+                                }
+                                /*if(date != "") {
+                                    Toast.makeText(CalendarScreen.this, date, Toast.LENGTH_SHORT).show();
+
+                                }
                                 else{
                                     date = null;
-                                }
+                                }*/
 
                                 /*String recur = String.valueOf(recurEditText.getText());
                                 Recur recurEnum = Recur.NONE;
