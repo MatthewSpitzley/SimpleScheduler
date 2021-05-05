@@ -20,5 +20,7 @@ public class AddCategoryActivity extends AppCompatActivity {
         categoryName = findViewById(R.id.category_name);
         backBtn = findViewById(R.id.back);
         addBtn = findViewById(R.id.add);
+
+
     }
 }
