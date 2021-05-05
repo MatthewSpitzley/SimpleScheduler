@@ -364,8 +364,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //get task list of given day
-    public ArrayList<TaskClass> getTaskList(ZonedDateTime calendarDate) {
-        ArrayList<TaskClass> returnList = new ArrayList<>();
+    public ArrayList<String> getTaskList(ZonedDateTime calendarDate) {
+        ArrayList<String> returnList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + TASK_TABLE;
 
@@ -377,14 +377,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 ZonedDateTime time = ZonedDateTime.parse(cursor.getString(2));
                 if(time.getDayOfMonth() == calendarDate.getDayOfMonth() && time.getMonth() == calendarDate.getMonth() && time.getYear() == calendarDate.getYear()){
                     String name = cursor.getString(0);
-                    Category category = new Category(cursor.getString(1));
-                    Recur recur = Recur.valueOf(cursor.getString(3));
-                    ZonedDateTime email = ZonedDateTime.parse(cursor.getString(4));
-                    ZonedDateTime push = ZonedDateTime.parse(cursor.getString(5));
-                    boolean complete = cursor.getInt(6) == 1 ? true: false;
 
-                    TaskClass newTask = new TaskClass(name, category, time, recur, email, push, complete);
-                    returnList.add(newTask);
+                    returnList.add(name);
                 }
                 else{
                     //Failure. Task was not in the same calendar month/day/year
@@ -401,8 +395,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //get task list of no dates
-    public ArrayList<TaskClass> getTaskList(String noDate) {
-        ArrayList<TaskClass> returnList = new ArrayList<>();
+    public ArrayList<String> getTaskList(String noDate) {
+        ArrayList<String> returnList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + TASK_TABLE;
 
@@ -414,14 +408,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 ZonedDateTime time = ZonedDateTime.parse(cursor.getString(2));
                 if(time == null){
                     String name = cursor.getString(0);
-                    Category category = new Category(cursor.getString(1));
-                    Recur recur = Recur.valueOf(cursor.getString(3));
-                    ZonedDateTime email = ZonedDateTime.parse(cursor.getString(4));
-                    ZonedDateTime push = ZonedDateTime.parse(cursor.getString(5));
-                    boolean complete = cursor.getInt(6) == 1 ? true: false;
 
-                    TaskClass newTask = new TaskClass(name, category, time, recur, email, push, complete);
-                    returnList.add(newTask);
+                    returnList.add(name);
                 }
                 else{
                     //Failure. Task has a date
