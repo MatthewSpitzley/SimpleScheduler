@@ -193,10 +193,12 @@ public class CalendarScreen extends AppCompatActivity {
         //ArrayList taskList = mHelper.getTaskList(zdt);
         //ArrayList<TaskClass> taskList = mHelper.getTaskList();
         ArrayList<String> result = new ArrayList<>();
-        for(int i = 0; i<mHelper.getTaskList().size(); i++){
-            //time.getDayOfMonth() == calendarDate.getDayOfMonth() && time.getMonth() == calendarDate.getMonth() && time.getYear() == calendarDate.getYear()
-            if(mHelper.getTaskList().get(i).getTime().getDayOfMonth()==zdt.getDayOfMonth() && mHelper.getTaskList().get(i).getTime().getMonth()==zdt.getMonth() && mHelper.getTaskList().get(i).getTime().getYear()==zdt.getYear()){
-                result.add(mHelper.getTaskList().get(i).getName());
+        if(zdt != null) {
+            for (int i = 0; i < mHelper.getTaskList().size(); i++) {
+                //time.getDayOfMonth() == calendarDate.getDayOfMonth() && time.getMonth() == calendarDate.getMonth() && time.getYear() == calendarDate.getYear()
+                if (mHelper.getTaskList().get(i).getTime().getDayOfMonth() == zdt.getDayOfMonth() && mHelper.getTaskList().get(i).getTime().getMonth() == zdt.getMonth() && mHelper.getTaskList().get(i).getTime().getYear() == zdt.getYear()) {
+                    result.add(mHelper.getTaskList().get(i).getName());
+                }
             }
         }
         mAdapter.addAll(result);
@@ -397,16 +399,17 @@ public class CalendarScreen extends AppCompatActivity {
                                 ZonedDateTime dateTime = null;
                                 try{
                                     timeDate = new String(date + " " + time + ":00 CST");
-
                                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss z");
                                     dateTime = ZonedDateTime.parse(timeDate, formatter);
                                 }
                                 catch (Exception e){
                                     e.getStackTrace();
                                 }
-                                /*if(date != "") {
+                                /*if(date != null) {
                                     Toast.makeText(CalendarScreen.this, date, Toast.LENGTH_SHORT).show();
-
+                                    timeDate = new String(date + " " + time + ":00 CST");
+                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss z");
+                                    dateTime = ZonedDateTime.parse(timeDate, formatter);
                                 }
                                 else{
                                     date = null;
