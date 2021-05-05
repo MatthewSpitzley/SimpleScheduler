@@ -13,3 +13,5 @@ Most xml files for the UI are located in SimpleScheduler/SimpleSchedulerApp/app/
 The task_list xml file is located in SimpleScheduler/SimpleSchedulerApp/app/src/main/res/menu
 
 The root_preferences xml file is located in SimpleScheduler/SimpleSchedulerApp/app/src/main/res/xml
+
+PHP scripts are locating in SimpleScheduler/SimpleSchedulerApp/php_scripts
