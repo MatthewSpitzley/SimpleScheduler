@@ -107,7 +107,8 @@ enum Recur {
     WEEKDAYS("Weekdays"),
     WEEKLY("Weekly"),
     MONTHLY("Monthly"),
-    YEARLY("Yearly");
+    YEARLY("Yearly"),
+    NONE("None");
 
     private final String recur;
 
