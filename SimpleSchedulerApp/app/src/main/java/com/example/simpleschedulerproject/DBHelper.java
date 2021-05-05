@@ -345,7 +345,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         Category category = null;
         ZonedDateTime time = null;
-        Recur recur = null;
+        Recur recur = Recur.DAILY;
         ZonedDateTime email = null;
         ZonedDateTime push = null;
 
@@ -356,8 +356,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     category = new Category(cursor.getString(1));
                 if(cursor.getString(2) != null)
                     time = ZonedDateTime.parse(cursor.getString(2));
-                if(cursor.getString(3) != null)
-                    recur = Recur.valueOf(cursor.getString(3));
+                //if(cursor.getString(3) != null)
+                    //recur = Recur.valueOf(cursor.getString(3));
                 if(cursor.getString(4) != null)
                     email = ZonedDateTime.parse(cursor.getString(4));
                 if(cursor.getString(5) != null)
@@ -378,7 +378,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //get task list of given day
-    public ArrayList<String> getTaskList(ZonedDateTime calendarDate) {
+    /*public ArrayList<String> getTaskList(ZonedDateTime calendarDate) {
         ArrayList<String> returnList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + TASK_TABLE;
@@ -386,9 +386,11 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString, null);
 
+        ZonedDateTime time = null;
         if(cursor.moveToFirst()) {
             do {
-                ZonedDateTime time = ZonedDateTime.parse(cursor.getString(2));
+                if(cursor.getString(2) != null)
+                    time = ZonedDateTime.parse(cursor.getString(2));
                 if(time.getDayOfMonth() == calendarDate.getDayOfMonth() && time.getMonth() == calendarDate.getMonth() && time.getYear() == calendarDate.getYear()){
                     String name = cursor.getString(0);
 
@@ -406,7 +408,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return returnList;
-    }
+    }*/
 
     //get task list of no dates
     public ArrayList<String> getTaskList(String noDate) {

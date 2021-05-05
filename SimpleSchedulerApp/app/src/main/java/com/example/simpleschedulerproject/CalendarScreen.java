@@ -190,9 +190,16 @@ public class CalendarScreen extends AppCompatActivity {
 
     private void updateUI(ZonedDateTime zdt){
         mAdapter.clear();
-
-        ArrayList taskList = mHelper.getTaskList(zdt);
-        mAdapter.addAll(taskList);
+        //ArrayList taskList = mHelper.getTaskList(zdt);
+        //ArrayList<TaskClass> taskList = mHelper.getTaskList();
+        ArrayList<String> result = new ArrayList<>();
+        for(int i = 0; i<mHelper.getTaskList().size(); i++){
+            //time.getDayOfMonth() == calendarDate.getDayOfMonth() && time.getMonth() == calendarDate.getMonth() && time.getYear() == calendarDate.getYear()
+            if(mHelper.getTaskList().get(i).getTime().getDayOfMonth()==zdt.getDayOfMonth() && mHelper.getTaskList().get(i).getTime().getMonth()==zdt.getMonth() && mHelper.getTaskList().get(i).getTime().getYear()==zdt.getYear()){
+                result.add(mHelper.getTaskList().get(i).getName());
+            }
+        }
+        mAdapter.addAll(result);
     }
 
     private void updateUI(String noDate){
@@ -326,7 +333,7 @@ public class CalendarScreen extends AppCompatActivity {
                     }
                 });
                 layout.addView(dateEditText);
-                final EditText recurEditText = new EditText(this);
+                /*final EditText recurEditText = new EditText(this);
                 recurEditText.setHint("Recurrence");
                 recurEditText.setInputType(InputType.TYPE_NULL);
                 recurEditText.setOnClickListener(new View.OnClickListener() {
@@ -356,7 +363,7 @@ public class CalendarScreen extends AppCompatActivity {
                         dialogCat.show();
                     }
                 });
-                layout.addView(recurEditText);
+                layout.addView(recurEditText);*/
                 /*final EditText emailET = new EditText(this);
                 if(!emailNotificationSetting){
                     emailET.setText("No");
@@ -388,7 +395,7 @@ public class CalendarScreen extends AppCompatActivity {
                                 String date = String.valueOf(dateEditText.getText());
                                 String timeDate = null;
                                 ZonedDateTime dateTime = null;
-                                if(dateEditText.didTouchFocusSelect()) {
+                                if(true) {
                                     Toast.makeText(CalendarScreen.this, date, Toast.LENGTH_SHORT).show();
                                     timeDate = new String(date + " " + time + ":00 CST");
 
@@ -399,8 +406,10 @@ public class CalendarScreen extends AppCompatActivity {
                                     date = null;
                                 }
 
-                                String recur = String.valueOf(recurEditText.getText());
-                                Recur recurEnum = Recur.DAILY;
+                                /*String recur = String.valueOf(recurEditText.getText());
+                                Recur recurEnum = Recur.NONE;
+                                if(recur.equalsIgnoreCase(""))
+                                    recurEnum = Recur.NONE;
                                 if(recur.equalsIgnoreCase("DAILY"))
                                     recurEnum = Recur.DAILY;
                                 if(recur.equalsIgnoreCase("WEEKDAYS"))
@@ -410,7 +419,7 @@ public class CalendarScreen extends AppCompatActivity {
                                 if(recur.equalsIgnoreCase("MONTHLY"))
                                     recurEnum = Recur.WEEKLY;
                                 if(recur.equalsIgnoreCase("YEARLY"))
-                                    recurEnum = Recur.YEARLY;
+                                    recurEnum = Recur.YEARLY;*/
 
                                 //String email = String.valueOf(emailET.getText());
                                 ZonedDateTime dateTimeEmail = dateTime;
@@ -418,7 +427,7 @@ public class CalendarScreen extends AppCompatActivity {
                                 //String push = String.valueOf(pushET.getText());
                                 ZonedDateTime dateTimePush = dateTime;
 
-                                TaskClass mTask = new TaskClass(task, category, dateTime, recurEnum, dateTimeEmail, dateTimePush, false);
+                                TaskClass mTask = new TaskClass(task, category, dateTime, Recur.DAILY, dateTimeEmail, dateTimePush, false);
                                 mHelper.addTask(mTask);
                                 updateUI();
                             }
