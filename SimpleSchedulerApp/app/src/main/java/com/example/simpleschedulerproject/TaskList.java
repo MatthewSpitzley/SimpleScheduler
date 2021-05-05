@@ -32,8 +32,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
+//import com.android.volley.RequestQueue;
+//import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 
 import java.text.DateFormat;
@@ -56,8 +56,6 @@ public class TaskList extends AppCompatActivity {
     private ImageButton settingsBtn;
     private Button signInBtn, addTaskBtn;
     private DBHelper mHelper;
-    private RequestQueue mQueue;
-    //private OkHttpClient client;
     private ListView mTaskList;
     private ArrayAdapter<String> mAdapter;
     private Settings settings;
@@ -135,7 +133,7 @@ public class TaskList extends AppCompatActivity {
 
         /*if(GoogleSignIn.getLastSignedInAccount(this) != null) {
             mQueue = Volley.newRequestQueue(this);
-            mHelper.fetchTasksParse(mQueue, mHelper);
+            mHelper.fetchTasksParse(this, mQueue, mHelper);
         }*/
 
         ArrayList<String> taskList = new ArrayList<>();
@@ -190,11 +188,28 @@ public class TaskList extends AppCompatActivity {
                 layout.addView(taskEditText);
                 final EditText catEditText = new EditText(this);
                 catEditText.setHint("Category");
-
+                catEditText.setInputType(InputType.TYPE_NULL);
                 catEditText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        String[] catOpt = { "Work", "School", "Personal" };
+                        AlertDialog.Builder catOptionsDialog = new AlertDialog.Builder(TaskList.this);
+                        catOptionsDialog.setTitle("Choose a category.");
+                        catOptionsDialog.setItems(catOpt, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface catOptionsDialog, int which) {
+                                                switch(which) {
+                                                    case 0: catEditText.setText("Work");
+                                                    break;
+                                                    case 1: catEditText.setText("School");
+                                                    break;
+                                                    case 2: catEditText.setText("Personal");
+                                                    break;
+                                                }
+                                            }
+                                        });
+                        AlertDialog dialogCat = catOptionsDialog.create();
+                        dialogCat.show();
                     }
                 });
                 layout.addView(catEditText);
@@ -277,6 +292,34 @@ public class TaskList extends AppCompatActivity {
                 layout.addView(dateEditText);
                 final EditText recurEditText = new EditText(this);
                 recurEditText.setHint("Recurrence");
+                recurEditText.setInputType(InputType.TYPE_NULL);
+                recurEditText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String[] recurOpt = { "DAILY", "WEEKDAYS", "WEEKLY", "MONTHLY", "YEARLY" };
+                        AlertDialog.Builder recurOptionsDialog = new AlertDialog.Builder(TaskList.this);
+                        recurOptionsDialog.setTitle("How often do you want notifications?");
+                        recurOptionsDialog.setItems(recurOpt, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface recurOptionsDialog, int which) {
+                                switch(which) {
+                                    case 0: recurEditText.setText("DAILY");
+                                        break;
+                                    case 1: recurEditText.setText("WEEKDAYS");
+                                        break;
+                                    case 2: recurEditText.setText("WEEKLY");
+                                        break;
+                                    case 3: recurEditText.setText("MONTHLY");
+                                        break;
+                                    case 4: recurEditText.setText("YEARLY");
+                                        break;
+                                }
+                            }
+                        });
+                        AlertDialog dialogCat = recurOptionsDialog.create();
+                        dialogCat.show();
+                    }
+                });
                 layout.addView(recurEditText);
                 final EditText emailET = new EditText(this);
                 if(!emailNotificationSetting){
@@ -305,6 +348,7 @@ public class TaskList extends AppCompatActivity {
                                 String cat = String.valueOf(catEditText.getText());
                                 Category category = new Category(cat);
 
+
                                 String time = String.valueOf(timeFormatted);
                                 String date = String.valueOf(dateEditText.getText());
                                 String timeDate = new String(date + " " + time + ":00 CST");
@@ -321,7 +365,7 @@ public class TaskList extends AppCompatActivity {
                                 if(recur.equalsIgnoreCase("WEEKLY"))
                                     recurEnum = Recur.WEEKLY;
                                 if(recur.equalsIgnoreCase("MONTHLY"))
-                                    recurEnum = Recur.WEEKLY;
+                                    recurEnum = Recur.MONTHLY;
                                 if(recur.equalsIgnoreCase("YEARLY"))
                                     recurEnum = Recur.YEARLY;
 
@@ -344,7 +388,49 @@ public class TaskList extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private AlertDialog AskOption(View view)
+    {
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
+                // set message, title, and icon
+                .setTitle("Complete")
+                .setMessage("Mark this task as complete?")
+                //.setIcon(R.drawable.delete)
+
+                .setPositiveButton("Complete", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //your deleting code
+                        View parent = (View) view.getParent();
+                        TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
+                        String task = String.valueOf(taskTextView.getText());
+                        SQLiteDatabase db = mHelper.getWritableDatabase();
+                        db.delete(DBHelper.TASK_TABLE,
+                                DBHelper.COLUMN_TASK_NAME + " = ?",
+                                new String[]{task});
+                        //mHelper.addTask()
+                        db.close();
+                        updateUI();
+                        dialog.dismiss();
+                    }
+
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+
+        return myQuittingDialogBox;
+    }
     public void deleteTask(View view) {
+        AlertDialog dialogCheck = AskOption(view);
+        dialogCheck.show();
+        updateUI();
+        /*
         View parent = (View) view.getParent();
         TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
         String task = String.valueOf(taskTextView.getText());
@@ -354,5 +440,7 @@ public class TaskList extends AppCompatActivity {
                 new String[]{task});
         db.close();
         updateUI();
+
+         */
     }
 }
