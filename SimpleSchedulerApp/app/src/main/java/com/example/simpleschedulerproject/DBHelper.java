@@ -408,8 +408,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if(cursor.moveToFirst()) {
             do {
-                ZonedDateTime time = ZonedDateTime.parse(cursor.getString(2));
-                if(time == null){
+                //ZonedDateTime time = ZonedDateTime.parse(cursor.getString(2));
+                if(cursor.isNull(2)){
                     String name = cursor.getString(0);
 
                     returnList.add(name);

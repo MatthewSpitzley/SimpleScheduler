@@ -392,7 +392,7 @@ public class TaskList extends AppCompatActivity {
                         //changing completion status and removing from task list
                         View parent = (View) view.getParent();
                         TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
-                        ArrayList<TaskClass> tList = mHelper.getTaskList();
+                        /*ArrayList<TaskClass> tList = mHelper.getTaskList();
                         TaskClass histTask;
                         String mTask = String.valueOf(taskTextView.getText());
                         for(int i = 0; i < tList.size(); i++) {
@@ -404,7 +404,7 @@ public class TaskList extends AppCompatActivity {
                             }
                             else
                                 continue;
-                        }
+                        }*/
                         String task = String.valueOf(taskTextView.getText());
                         SQLiteDatabase db = mHelper.getWritableDatabase();
                         db.delete(DBHelper.TASK_TABLE,
