@@ -1,13 +1,10 @@
 package com.example.simpleschedulerproject;
 
-import android.app.VoiceInteractor;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -17,18 +14,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.List;
-
 
 public class DBHelper extends SQLiteOpenHelper {
 

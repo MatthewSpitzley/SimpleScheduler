@@ -16,9 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -27,15 +25,8 @@ import android.content.Intent;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.content.Context;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
-
-//import com.android.volley.RequestQueue;
-//import com.android.volley.toolbox.Volley;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,12 +34,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-//import okhttp3.OkHttpClient;
 
 public class TaskList extends AppCompatActivity {
     private static final String TAG = "TaskList";
