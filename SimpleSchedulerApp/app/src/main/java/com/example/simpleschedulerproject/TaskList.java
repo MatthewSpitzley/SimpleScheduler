@@ -48,6 +48,7 @@ public class TaskList extends AppCompatActivity {
     private TimePickerDialog tPicker;
     private DatePickerDialog dPicker;
     private TextView tView;
+    private Button addCategory;
 
 
     @Override
@@ -60,9 +61,7 @@ public class TaskList extends AppCompatActivity {
 
         settingsBtn = findViewById(R.id.settingsButton);
         signInBtn = findViewById(R.id.sign_in_button);
-
-
-
+        addCategory = findViewById(R.id.add_category);
 
 
         settingsBtn.setOnClickListener(new View.OnClickListener(){
@@ -76,6 +75,13 @@ public class TaskList extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent i = new Intent(TaskList.this, GoogleSignInActivity.class);
+                startActivity(i);
+            }
+        });
+        addCategory.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent i = new Intent(TaskList.this, AddCategoryActivity.class);
                 startActivity(i);
             }
         });
@@ -304,7 +310,7 @@ public class TaskList extends AppCompatActivity {
                     }
                 });
                 layout.addView(recurEditText);
-                final EditText emailET = new EditText(this);
+                /*final EditText emailET = new EditText(this);
                 if(!emailNotificationSetting){
                     emailET.setText("No");
                 }
@@ -319,7 +325,7 @@ public class TaskList extends AppCompatActivity {
                 else{
                     pushET.setHint("Push Notifications?");
                     layout.addView(pushET);
-                }
+                }*/
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Add a new task")
                         .setView(layout)
@@ -352,10 +358,10 @@ public class TaskList extends AppCompatActivity {
                                 if(recur.equalsIgnoreCase("YEARLY"))
                                     recurEnum = Recur.YEARLY;
 
-                                String email = String.valueOf(emailET.getText());
+                                //String email = String.valueOf(emailET.getText());
                                 ZonedDateTime dateTimeEmail = dateTime;
 
-                                String push = String.valueOf(pushET.getText());
+                                //String push = String.valueOf(pushET.getText());
                                 ZonedDateTime dateTimePush = dateTime;
 
                                 TaskClass mTask = new TaskClass(task, category, dateTime, recurEnum, dateTimeEmail, dateTimePush, false);

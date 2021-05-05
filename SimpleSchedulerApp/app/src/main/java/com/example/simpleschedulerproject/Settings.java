@@ -17,7 +17,7 @@ public class Settings {
         return timeFormat;
     }
 
-   //allows the user to change the time before a task occurs to send a reminder notification
+    /*//allows the user to change the time before a task occurs to send a reminder notification
     public int notificationTiming(int x){
         int timing = 60;
 
@@ -49,7 +49,7 @@ public class Settings {
         }
 
         return timing;
-    }
+    }*/
 
     //user changes how they prefer to see dates displayed
     public String dateDisplay(int x){

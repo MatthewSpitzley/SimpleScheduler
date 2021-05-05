@@ -120,10 +120,10 @@ public class SettingsActivity extends AppCompatActivity {
                                                 "\n\tHelp: Gives you messages based on what you need help with in order to better your understanding of how to use this app" +
                                                 "\n\tDisplay Screen: Changes the first screen you see at startup" +
                                                 "\n\tHour Time: Changes how you would like to view time in terms of hours" +
-                                                "\n\tDate Display Format: Changes the format of dates to your preference" +
+                                                "\n\tDate Display Format: Changes the format of dates to your preference" /*+
                                                 "\n\tLate Notifications: Changes whether or not you want notifications sent when a task is late" +
                                                 "\n\tEmail Notifications: Changes whether or not you have notifications sent to your email" +
-                                                "\n\tPush Notifications: Changes whether or not you have notifications sent to your personal device");
+                                                "\n\tPush Notifications: Changes whether or not you have notifications sent to your personal device"*/);
                                         builderSettingsScreen.setNegativeButton("OK", null);
                                         AlertDialog dialogSettingsScreen = builderSettingsScreen.create();
                                         dialogSettingsScreen.show();
