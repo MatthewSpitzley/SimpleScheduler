@@ -17,13 +17,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-<<<<<<< HEAD
-
-=======
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-
->>>>>>> 01eb15f8e47fc9fa3227177d621f2c45fcf8b780
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,11 +29,6 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
-import okhttp3.OkHttpClient;
-
-=======
->>>>>>> 01eb15f8e47fc9fa3227177d621f2c45fcf8b780
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "com.example.simpleschedulerproject.db";
@@ -144,7 +134,7 @@ public class DBHelper extends SQLiteOpenHelper {
             return false;
         }
     }
-/*
+
     public void fetchCategoriesParse(Context context, RequestQueue mQueue) {
         String url = "http://localhost/fetchCategories.php";
         DBHelper mHelper = new DBHelper(context);
