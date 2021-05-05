@@ -48,7 +48,7 @@ public class SettingsActivity extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setTitle("What would you like help with?");
                     // add a list
-                    String[] options = {"Tasks", "Categories", "Task List Screen", "Category Screen", "Calendar Screen", "Settings Screen"};
+                    String[] options = {"Tasks", "Categories", "Task List Screen", "Category Screen", "Calendar Screen", /*"History Screen",*/ "Settings Screen"};
                     builder.setItems(options, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -102,6 +102,14 @@ public class SettingsActivity extends AppCompatActivity {
                                         AlertDialog dialogCalendarScreen = builderCalendarScreen.create();
                                         dialogCalendarScreen.show();
                                         break;
+                                /*case 5: // History Screen
+                                        AlertDialog.Builder builderHistoryScreen = new AlertDialog.Builder(getContext());
+                                        builderHistoryScreen.setTitle("History Screen");
+                                        builderHistoryScreen.setMessage("This screen shows all previously completed tasks");
+                                        builderHistoryScreen.setNegativeButton("OK", null);
+                                        AlertDialog dialogHistoryScreen = builderHistoryScreen.create();
+                                        dialogHistoryScreen.show();
+                                        break;*/
                                 case 5: // Settings Screen
                                         AlertDialog.Builder builderSettingsScreen = new AlertDialog.Builder(getContext());
                                         builderSettingsScreen.setTitle("Settings Screen");
