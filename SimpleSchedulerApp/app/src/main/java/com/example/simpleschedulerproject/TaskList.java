@@ -187,11 +187,28 @@ public class TaskList extends AppCompatActivity {
                 layout.addView(taskEditText);
                 final EditText catEditText = new EditText(this);
                 catEditText.setHint("Category");
-
+                catEditText.setInputType(InputType.TYPE_NULL);
                 catEditText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        String[] catOpt = { "Work", "School", "Personal" };
+                        AlertDialog.Builder catOptionsDialog = new AlertDialog.Builder(TaskList.this);
+                        catOptionsDialog.setTitle("Choose a category.");
+                        catOptionsDialog.setItems(catOpt, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface catOptionsDialog, int which) {
+                                                switch(which) {
+                                                    case 0: catEditText.setText("Work");
+                                                    break;
+                                                    case 1: catEditText.setText("School");
+                                                    break;
+                                                    case 2: catEditText.setText("Personal");
+                                                    break;
+                                                }
+                                            }
+                                        });
+                        AlertDialog dialogCat = catOptionsDialog.create();
+                        dialogCat.show();
                     }
                 });
                 layout.addView(catEditText);
@@ -274,6 +291,34 @@ public class TaskList extends AppCompatActivity {
                 layout.addView(dateEditText);
                 final EditText recurEditText = new EditText(this);
                 recurEditText.setHint("Recurrence");
+                recurEditText.setInputType(InputType.TYPE_NULL);
+                recurEditText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String[] recurOpt = { "DAILY", "WEEKDAYS", "WEEKLY", "MONTHLY", "YEARLY" };
+                        AlertDialog.Builder recurOptionsDialog = new AlertDialog.Builder(TaskList.this);
+                        recurOptionsDialog.setTitle("How often do you want notifications?");
+                        recurOptionsDialog.setItems(recurOpt, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface recurOptionsDialog, int which) {
+                                switch(which) {
+                                    case 0: recurEditText.setText("DAILY");
+                                        break;
+                                    case 1: recurEditText.setText("WEEKDAYS");
+                                        break;
+                                    case 2: recurEditText.setText("WEEKLY");
+                                        break;
+                                    case 3: recurEditText.setText("MONTHLY");
+                                        break;
+                                    case 4: recurEditText.setText("YEARLY");
+                                        break;
+                                }
+                            }
+                        });
+                        AlertDialog dialogCat = recurOptionsDialog.create();
+                        dialogCat.show();
+                    }
+                });
                 layout.addView(recurEditText);
                 final EditText emailET = new EditText(this);
                 if(!emailNotificationSetting){
@@ -302,6 +347,7 @@ public class TaskList extends AppCompatActivity {
                                 String cat = String.valueOf(catEditText.getText());
                                 Category category = new Category(cat);
 
+
                                 String time = String.valueOf(timeFormatted);
                                 String date = String.valueOf(dateEditText.getText());
                                 String timeDate = new String(date + " " + time + ":00 CST");
@@ -318,7 +364,7 @@ public class TaskList extends AppCompatActivity {
                                 if(recur.equalsIgnoreCase("WEEKLY"))
                                     recurEnum = Recur.WEEKLY;
                                 if(recur.equalsIgnoreCase("MONTHLY"))
-                                    recurEnum = Recur.WEEKLY;
+                                    recurEnum = Recur.MONTHLY;
                                 if(recur.equalsIgnoreCase("YEARLY"))
                                     recurEnum = Recur.YEARLY;
 
@@ -341,6 +387,7 @@ public class TaskList extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
     private AlertDialog AskOption(View view)
     {
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
