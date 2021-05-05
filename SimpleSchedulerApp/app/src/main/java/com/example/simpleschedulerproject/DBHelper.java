@@ -76,10 +76,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
         cv.put(COLUMN_TASK_NAME, task.getName());
         cv.put(COLUMN_TASK_CATEGORY, task.getCategory().getName());
-        cv.put(COLUMN_TASK_TIME, task.getTime().toString());
+        if(task.getTime() != null)
+            cv.put(COLUMN_TASK_TIME, task.getTime().toString());
         cv.put(COLUMN_TASK_RECUR, task.getRecur().toString());
-        cv.put(COLUMN_TASK_EMAIL_NOTIFICATION, task.getEmail().toString());
-        cv.put(COLUMN_TASK_PUSH_NOTIFICATION, task.getPush().toString());
+        if(task.getTime() != null)
+            cv.put(COLUMN_TASK_EMAIL_NOTIFICATION, task.getEmail().toString());
+        if(task.getTime() != null)
+            cv.put(COLUMN_TASK_PUSH_NOTIFICATION, task.getPush().toString());
         cv.put(COLUMN_TASK_COMPLETE, task.isComplete());
 
         long insert = db.insert(TASK_TABLE, null, cv);
@@ -340,14 +343,25 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString, null);
 
+        Category category = null;
+        ZonedDateTime time = null;
+        Recur recur = Recur.DAILY;
+        ZonedDateTime email = null;
+        ZonedDateTime push = null;
+
         if(cursor.moveToFirst()) {
             do {
                 String name = cursor.getString(0);
-                Category category = new Category(cursor.getString(1));
-                ZonedDateTime time = ZonedDateTime.parse(cursor.getString(2));
-                Recur recur = Recur.valueOf(cursor.getString(3));
-                ZonedDateTime email = ZonedDateTime.parse(cursor.getString(4));
-                ZonedDateTime push = ZonedDateTime.parse(cursor.getString(5));
+                if(cursor.getString(1) != null)
+                    category = new Category(cursor.getString(1));
+                if(cursor.getString(2) != null)
+                    time = ZonedDateTime.parse(cursor.getString(2));
+                //if(cursor.getString(3) != null)
+                    //recur = Recur.valueOf(cursor.getString(3));
+                if(cursor.getString(4) != null)
+                    email = ZonedDateTime.parse(cursor.getString(4));
+                if(cursor.getString(5) != null)
+                    push = ZonedDateTime.parse(cursor.getString(5));
                 boolean complete = cursor.getInt(6) == 1;
 
                 TaskClass newTask = new TaskClass(name, category, time, recur, email, push, complete);
@@ -364,27 +378,23 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //get task list of given day
-    public ArrayList<TaskClass> getTaskList(ZonedDateTime calendarDate) {
-        ArrayList<TaskClass> returnList = new ArrayList<>();
+    /*public ArrayList<String> getTaskList(ZonedDateTime calendarDate) {
+        ArrayList<String> returnList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + TASK_TABLE;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString, null);
 
+        ZonedDateTime time = null;
         if(cursor.moveToFirst()) {
             do {
-                ZonedDateTime time = ZonedDateTime.parse(cursor.getString(2));
+                if(cursor.getString(2) != null)
+                    time = ZonedDateTime.parse(cursor.getString(2));
                 if(time.getDayOfMonth() == calendarDate.getDayOfMonth() && time.getMonth() == calendarDate.getMonth() && time.getYear() == calendarDate.getYear()){
                     String name = cursor.getString(0);
-                    Category category = new Category(cursor.getString(1));
-                    Recur recur = Recur.valueOf(cursor.getString(3));
-                    ZonedDateTime email = ZonedDateTime.parse(cursor.getString(4));
-                    ZonedDateTime push = ZonedDateTime.parse(cursor.getString(5));
-                    boolean complete = cursor.getInt(6) == 1 ? true: false;
 
-                    TaskClass newTask = new TaskClass(name, category, time, recur, email, push, complete);
-                    returnList.add(newTask);
+                    returnList.add(name);
                 }
                 else{
                     //Failure. Task was not in the same calendar month/day/year
@@ -398,11 +408,11 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return returnList;
-    }
+    }*/
 
     //get task list of no dates
-    public ArrayList<TaskClass> getTaskList(String noDate) {
-        ArrayList<TaskClass> returnList = new ArrayList<>();
+    public ArrayList<String> getTaskList(String noDate) {
+        ArrayList<String> returnList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + TASK_TABLE;
 
@@ -411,17 +421,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if(cursor.moveToFirst()) {
             do {
-                ZonedDateTime time = ZonedDateTime.parse(cursor.getString(2));
-                if(time == null){
+                //ZonedDateTime time = ZonedDateTime.parse(cursor.getString(2));
+                if(cursor.isNull(2)){
                     String name = cursor.getString(0);
-                    Category category = new Category(cursor.getString(1));
-                    Recur recur = Recur.valueOf(cursor.getString(3));
-                    ZonedDateTime email = ZonedDateTime.parse(cursor.getString(4));
-                    ZonedDateTime push = ZonedDateTime.parse(cursor.getString(5));
-                    boolean complete = cursor.getInt(6) == 1 ? true: false;
 
-                    TaskClass newTask = new TaskClass(name, category, time, recur, email, push, complete);
-                    returnList.add(newTask);
+                    returnList.add(name);
                 }
                 else{
                     //Failure. Task has a date

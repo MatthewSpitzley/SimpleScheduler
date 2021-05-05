@@ -103,6 +103,7 @@ public class TaskClass {
 }
 
 enum Recur {
+    NONE(""),
     DAILY("Daily"),
     WEEKDAYS("Weekdays"),
     WEEKLY("Weekly"),

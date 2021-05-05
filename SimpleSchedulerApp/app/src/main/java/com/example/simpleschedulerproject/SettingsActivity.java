@@ -56,7 +56,10 @@ public class SettingsActivity extends AppCompatActivity {
                                 case 0: // Tasks
                                         AlertDialog.Builder builderTask = new AlertDialog.Builder(getContext());
                                         builderTask.setTitle("Tasks");
-                                        builderTask.setMessage("The tasks you make in this app can be made of different components such as ");
+                                        builderTask.setMessage("The tasks you make in this app can be made of different components such as " +
+                                                "\n\tThe name of the task" +
+                                                "\n\tThe category of the task" +
+                                                "\n\tThe date and time of completion");
                                         // add a button
                                         builderTask.setNegativeButton("OK", null);
                                         // create and show the alert dialog
@@ -66,7 +69,8 @@ public class SettingsActivity extends AppCompatActivity {
                                 case 1: // Categories
                                         AlertDialog.Builder builderCategories = new AlertDialog.Builder(getContext());
                                         builderCategories.setTitle("Categories");
-                                        builderCategories.setMessage("The categories are an optional addition to tasks that are used for grouping or organizing many tasks of the same topic together");
+                                        builderCategories.setMessage("The categories are an optional addition to tasks that are used for grouping or organizing many tasks of the same topic together" +
+                                                "\nTo add a new category go to the task list and press the add category button at the top left");
                                         builderCategories.setPositiveButton("OK", null);
                                         AlertDialog dialogCategories = builderCategories.create();
                                         dialogCategories.show();
@@ -74,16 +78,16 @@ public class SettingsActivity extends AppCompatActivity {
                                 case 2: // Task List Screen
                                         AlertDialog.Builder builderTaskScreen = new AlertDialog.Builder(getContext());
                                         builderTaskScreen.setTitle("Tasks List");
-                                        builderTaskScreen.setMessage("This screen shows the complete list of all tasks that are currently active, and is sorted by the date first and then alphabetically " +
-                                                "\n When you want to add a new task, go to the bottom left and press the 'Add Task' button ");
+                                        builderTaskScreen.setMessage("This screen shows the complete list of all tasks that are currently active, " +
+                                                "\n When you want to add a new task, go to the top right and press the '+' button ");
                                         builderTaskScreen.setPositiveButton("OK", null);
                                         AlertDialog dialogTaskScreen = builderTaskScreen.create();
                                         dialogTaskScreen.show();
                                         break;
                                 case 3: // Category Dropdown Menu
                                         AlertDialog.Builder builderCategoriesScreen = new AlertDialog.Builder(getContext());
-                                        builderCategoriesScreen.setTitle("Category Dropdown Menu");
-                                        builderCategoriesScreen.setMessage("The category dropdown shows the complete list of categories, sorted alphabetically");
+                                        builderCategoriesScreen.setTitle("Category Add Menu");
+                                        builderCategoriesScreen.setMessage("The category add menu shows a text box to add a new category and a back button to go back and a add button to add the category name to the list of categories");
                                         builderCategoriesScreen.setPositiveButton("OK", null);
                                         AlertDialog dialogCategoriesScreen = builderCategoriesScreen.create();
                                         dialogCategoriesScreen.show();
@@ -93,7 +97,6 @@ public class SettingsActivity extends AppCompatActivity {
                                         builderCalendarScreen.setTitle("Calendar Screen");
                                         builderCalendarScreen.setMessage("This screen displays the same information as the task list, except in a visual calendar form " +
                                                 "\nIf you want to see the tasks for a certain day, select a day on the calendar, and every task for that day will be displayed underneath the calendar" +
-                                                "\nThe components of the tasks that will be displayed (if applicable) are the: task name, category, and time to be completed" +
                                                 "\nFor tasks that do not have a date select the button 'Tasks with no date'");
                                         builderCalendarScreen.setPositiveButton("OK", null);
                                         AlertDialog dialogCalendarScreen = builderCalendarScreen.create();
@@ -102,12 +105,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 case 5: // History Screen
                                         AlertDialog.Builder builderHistoryScreen = new AlertDialog.Builder(getContext());
                                         builderHistoryScreen.setTitle("History Screen");
-                                        builderHistoryScreen.setMessage("This screen shows all previously completed tasks " +
-                                                "\nFor each task displayed, it will show (if applicable): " +
-                                                "\n\t the tasks name, " +
-                                                "\n\t the category of the task, " +
-                                                "\n\t the time the task was set to be completed, " +
-                                                "\n\t and the date the task was set to be completed");
+                                        builderHistoryScreen.setMessage("This screen shows all previously completed tasks");
                                         builderHistoryScreen.setNegativeButton("OK", null);
                                         AlertDialog dialogHistoryScreen = builderHistoryScreen.create();
                                         dialogHistoryScreen.show();

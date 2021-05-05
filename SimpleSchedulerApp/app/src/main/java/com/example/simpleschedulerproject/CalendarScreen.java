@@ -40,6 +40,7 @@ import java.util.Calendar;
 import java.util.Date;
 import android.view.MotionEvent;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class CalendarScreen extends AppCompatActivity {
 
@@ -93,6 +94,7 @@ public class CalendarScreen extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 dateView.setText("No Date");
+                updateUI("No Date");
             }
         });
 
@@ -126,8 +128,18 @@ public class CalendarScreen extends AppCompatActivity {
                 //Based on root_preferences change the output of the date at the top
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(calendar.getContext() /* Activity context */);
                 int dateDisplayFormat = Integer.valueOf(sharedPreferences.getString("DateChoices", ""));
-                String dateString = dayOfMonth + "/" + (month+1) + "/" + year;
-                DateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy");
+                String formattedMonth = ""+(month+1);
+                if(month < 10){
+
+                    formattedMonth = "0" + (month+1);
+                }
+                String formattedDayOfMonth = ""+dayOfMonth;
+                if(dayOfMonth < 10){
+
+                    formattedDayOfMonth = "0" + dayOfMonth;
+                }
+                String dateString = formattedMonth + "/" + formattedDayOfMonth + "/" + year;
+                DateFormat originalFormat = new SimpleDateFormat("MM/dd/yyyy");
                 DateFormat targetFormat = new SimpleDateFormat(settings.dateDisplay(dateDisplayFormat));
                 Date date = null;
                 try {
@@ -137,7 +149,14 @@ public class CalendarScreen extends AppCompatActivity {
                 }
                 String formattedDate = targetFormat.format(date);
                 dateView.setText(formattedDate);
-                updateUI();
+
+                String time = "10:10";
+                //dateString
+                String timeDate = dateString + " " + time + ":00 CST";
+
+                DateTimeFormatter zdtFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss z");
+                ZonedDateTime zdt = ZonedDateTime.parse(timeDate, zdtFormatter);
+                updateUI(zdt);
             }
         });
         updateUI();
@@ -145,10 +164,9 @@ public class CalendarScreen extends AppCompatActivity {
 
     private void updateUI() {
         ArrayList<String> taskList = new ArrayList<>();
+
         SQLiteDatabase db = mHelper.getReadableDatabase();
-        Cursor cursor = db.query(DBHelper.TASK_TABLE,
-                new String[]{DBHelper.COLUMN_TASK_NAME},
-                null, null, null, null, null);
+        Cursor cursor = db.query(DBHelper.TASK_TABLE, new String[]{DBHelper.COLUMN_TASK_NAME}, null, null, null, null, null);
         while (cursor.moveToNext()) {
             int idx = cursor.getColumnIndex(DBHelper.COLUMN_TASK_NAME);
             taskList.add(cursor.getString(idx));
@@ -168,6 +186,29 @@ public class CalendarScreen extends AppCompatActivity {
 
         cursor.close();
         db.close();
+    }
+
+    private void updateUI(ZonedDateTime zdt){
+        mAdapter.clear();
+        //ArrayList taskList = mHelper.getTaskList(zdt);
+        //ArrayList<TaskClass> taskList = mHelper.getTaskList();
+        ArrayList<String> result = new ArrayList<>();
+        if(zdt != null) {
+            for (int i = 0; i < mHelper.getTaskList().size(); i++) {
+                //time.getDayOfMonth() == calendarDate.getDayOfMonth() && time.getMonth() == calendarDate.getMonth() && time.getYear() == calendarDate.getYear()
+                if (mHelper.getTaskList().get(i).getTime().getDayOfMonth() == zdt.getDayOfMonth() && mHelper.getTaskList().get(i).getTime().getMonth() == zdt.getMonth() && mHelper.getTaskList().get(i).getTime().getYear() == zdt.getYear()) {
+                    result.add(mHelper.getTaskList().get(i).getName());
+                }
+            }
+        }
+        mAdapter.addAll(result);
+    }
+
+    private void updateUI(String noDate){
+        mAdapter.clear();
+
+        ArrayList taskList = mHelper.getTaskList(noDate);
+        mAdapter.addAll(taskList);
     }
 
     @Override
@@ -194,11 +235,25 @@ public class CalendarScreen extends AppCompatActivity {
                 layout.addView(taskEditText);
                 final EditText catEditText = new EditText(this);
                 catEditText.setHint("Category");
-
+                catEditText.setInputType(InputType.TYPE_NULL);
                 catEditText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        ArrayList<Category> cList = mHelper.getCategoryList();
+                        String[] catOpt = new String[cList.size()];
+                        for(int i = 0; i < cList.size(); i++) {
+                            catOpt[i] = String.valueOf(cList.get(i));
+                        }
+                        AlertDialog.Builder catOptionsDialog = new AlertDialog.Builder(CalendarScreen.this);
+                        catOptionsDialog.setTitle("Choose a category.");
+                        catOptionsDialog.setItems(catOpt, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface catOptionsDialog, int which) {
+                                catEditText.setText(catOpt[which]);
+                            }
+                        });
+                        AlertDialog dialogCat = catOptionsDialog.create();
+                        dialogCat.show();
                     }
                 });
                 layout.addView(catEditText);
@@ -248,7 +303,8 @@ public class CalendarScreen extends AppCompatActivity {
                 layout.addView(timeEditText);
                 final EditText dateEditText = new EditText(this);
                 dateEditText.setHint("Completion Date");
-                dateEditText.setInputType(InputType.TYPE_NULL);
+                //dateEditText.setInputType(InputType.TYPE_NULL);
+                String dateEditDefault = String.valueOf(dateEditText.getText());
                 dateEditText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -279,9 +335,37 @@ public class CalendarScreen extends AppCompatActivity {
                     }
                 });
                 layout.addView(dateEditText);
-                final EditText recurEditText = new EditText(this);
+                /*final EditText recurEditText = new EditText(this);
                 recurEditText.setHint("Recurrence");
-                layout.addView(recurEditText);
+                recurEditText.setInputType(InputType.TYPE_NULL);
+                recurEditText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String[] recurOpt = { "DAILY", "WEEKDAYS", "WEEKLY", "MONTHLY", "YEARLY" };
+                        AlertDialog.Builder recurOptionsDialog = new AlertDialog.Builder(CalendarScreen.this);
+                        recurOptionsDialog.setTitle("How often do you want notifications?");
+                        recurOptionsDialog.setItems(recurOpt, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface recurOptionsDialog, int which) {
+                                switch(which) {
+                                    case 0: recurEditText.setText("DAILY");
+                                        break;
+                                    case 1: recurEditText.setText("WEEKDAYS");
+                                        break;
+                                    case 2: recurEditText.setText("WEEKLY");
+                                        break;
+                                    case 3: recurEditText.setText("MONTHLY");
+                                        break;
+                                    case 4: recurEditText.setText("YEARLY");
+                                        break;
+                                }
+                            }
+                        });
+                        AlertDialog dialogCat = recurOptionsDialog.create();
+                        dialogCat.show();
+                    }
+                });
+                layout.addView(recurEditText);*/
                 /*final EditText emailET = new EditText(this);
                 if(!emailNotificationSetting){
                     emailET.setText("No");
@@ -311,13 +395,30 @@ public class CalendarScreen extends AppCompatActivity {
 
                                 String time = String.valueOf(timeFormatted);
                                 String date = String.valueOf(dateEditText.getText());
-                                String timeDate = new String(date + " " + time + ":00 CST");
+                                String timeDate = null;
+                                ZonedDateTime dateTime = null;
+                                try{
+                                    timeDate = new String(date + " " + time + ":00 CST");
+                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss z");
+                                    dateTime = ZonedDateTime.parse(timeDate, formatter);
+                                }
+                                catch (Exception e){
+                                    e.getStackTrace();
+                                }
+                                /*if(date != null) {
+                                    Toast.makeText(CalendarScreen.this, date, Toast.LENGTH_SHORT).show();
+                                    timeDate = new String(date + " " + time + ":00 CST");
+                                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss z");
+                                    dateTime = ZonedDateTime.parse(timeDate, formatter);
+                                }
+                                else{
+                                    date = null;
+                                }*/
 
-                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss z");
-                                ZonedDateTime dateTime = ZonedDateTime.parse(timeDate, formatter);
-
-                                String recur = String.valueOf(recurEditText.getText());
-                                Recur recurEnum = Recur.DAILY;
+                                /*String recur = String.valueOf(recurEditText.getText());
+                                Recur recurEnum = Recur.NONE;
+                                if(recur.equalsIgnoreCase(""))
+                                    recurEnum = Recur.NONE;
                                 if(recur.equalsIgnoreCase("DAILY"))
                                     recurEnum = Recur.DAILY;
                                 if(recur.equalsIgnoreCase("WEEKDAYS"))
@@ -327,7 +428,7 @@ public class CalendarScreen extends AppCompatActivity {
                                 if(recur.equalsIgnoreCase("MONTHLY"))
                                     recurEnum = Recur.WEEKLY;
                                 if(recur.equalsIgnoreCase("YEARLY"))
-                                    recurEnum = Recur.YEARLY;
+                                    recurEnum = Recur.YEARLY;*/
 
                                 //String email = String.valueOf(emailET.getText());
                                 ZonedDateTime dateTimeEmail = dateTime;
@@ -335,7 +436,7 @@ public class CalendarScreen extends AppCompatActivity {
                                 //String push = String.valueOf(pushET.getText());
                                 ZonedDateTime dateTimePush = dateTime;
 
-                                TaskClass mTask = new TaskClass(task, category, dateTime, recurEnum, dateTimeEmail, dateTimePush, false);
+                                TaskClass mTask = new TaskClass(task, category, dateTime, Recur.DAILY, dateTimeEmail, dateTimePush, false);
                                 mHelper.addTask(mTask);
                                 updateUI();
                             }
@@ -348,7 +449,61 @@ public class CalendarScreen extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    private AlertDialog AskOption(View view)
+    {
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
+                // set message, title, and icon
+                .setTitle("Complete")
+                .setMessage("Mark this task as complete?")
+                //.setIcon(R.drawable.delete)
+
+                .setPositiveButton("Complete", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //changing completion status and removing from task list
+                        View parent = (View) view.getParent();
+                        TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
+						/*ArrayList<TaskClass> tList = mHelper.getTaskList();                        TaskClass histTask;
+                        String mTask = String.valueOf(taskTextView.getText());
+                        for(int i = 0; i < tList.size(); i++) {
+                            if(mTask == tList.get(i).getName()) {
+                                histTask = new TaskClass(tList.get(i).getName(), tList.get(i).getCategory(),
+                                        tList.get(i).getTime(), tList.get(i).getRecur(), tList.get(i).getEmail(),
+                                        tList.get(i).getPush(), true);
+                                mHelper.addTask(histTask);
+                            }
+                            else
+                                continue;
+                        }*/
+                        String task = String.valueOf(taskTextView.getText());
+                        SQLiteDatabase db = mHelper.getWritableDatabase();
+                        db.delete(DBHelper.TASK_TABLE,
+                                DBHelper.COLUMN_TASK_NAME + " = ?",
+                                new String[]{task});
+                        //mHelper.addTask()
+                        db.close();
+                        updateUI();
+                        dialog.dismiss();
+                    }
+
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+
+        return myQuittingDialogBox;
+    }
     public void deleteTask(View view) {
+        AlertDialog dialogCheck = AskOption(view);
+        dialogCheck.show();
+        updateUI();
+    }
+    /*public void deleteTask(View view) {
         View parent = (View) view.getParent();
         TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
         String task = String.valueOf(taskTextView.getText());
@@ -358,7 +513,7 @@ public class CalendarScreen extends AppCompatActivity {
                 new String[]{task});
         db.close();
         updateUI();
-    }
+    }*/
 
     /*
      * When the activity is resumed:

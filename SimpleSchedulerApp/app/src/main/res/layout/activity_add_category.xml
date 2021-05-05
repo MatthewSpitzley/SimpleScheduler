@@ -9,7 +9,7 @@
 
     <EditText
         android:id="@+id/category_name"
-        android:text="add task name here"
+        android:text="add category name here"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">

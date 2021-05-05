@@ -279,13 +279,13 @@ public class TaskList extends AppCompatActivity {
                     }
                 });
                 layout.addView(dateEditText);
-                final EditText recurEditText = new EditText(this);
+                /*final EditText recurEditText = new EditText(this);
                 recurEditText.setHint("Recurrence");
                 recurEditText.setInputType(InputType.TYPE_NULL);
                 recurEditText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String[] recurOpt = { "DAILY", "WEEKDAYS", "WEEKLY", "MONTHLY", "YEARLY" };
+                        String[] recurOpt = { "DAILY", "WEEKDAYS", "WEEKLY", "MONTHLY", "YEARLY", "NONE" };
                         AlertDialog.Builder recurOptionsDialog = new AlertDialog.Builder(TaskList.this);
                         recurOptionsDialog.setTitle("How often do you want notifications?");
                         recurOptionsDialog.setItems(recurOpt, new DialogInterface.OnClickListener() {
@@ -302,6 +302,7 @@ public class TaskList extends AppCompatActivity {
                                         break;
                                     case 4: recurEditText.setText("YEARLY");
                                         break;
+                                    case 5: recurEditText.setText("NONE");
                                 }
                             }
                         });
@@ -309,7 +310,7 @@ public class TaskList extends AppCompatActivity {
                         dialogCat.show();
                     }
                 });
-                layout.addView(recurEditText);
+                layout.addView(recurEditText);*/
                 /*final EditText emailET = new EditText(this);
                 if(!emailNotificationSetting){
                     emailET.setText("No");
@@ -345,8 +346,8 @@ public class TaskList extends AppCompatActivity {
                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss z");
                                 ZonedDateTime dateTime = ZonedDateTime.parse(timeDate, formatter);
 
-                                String recur = String.valueOf(recurEditText.getText());
-                                Recur recurEnum = Recur.DAILY;
+                                /*String recur = String.valueOf(recurEditText.getText());
+                                Recur recurEnum = Recur.NONE;
                                 if(recur.equalsIgnoreCase("DAILY"))
                                     recurEnum = Recur.DAILY;
                                 if(recur.equalsIgnoreCase("WEEKDAYS"))
@@ -356,7 +357,7 @@ public class TaskList extends AppCompatActivity {
                                 if(recur.equalsIgnoreCase("MONTHLY"))
                                     recurEnum = Recur.MONTHLY;
                                 if(recur.equalsIgnoreCase("YEARLY"))
-                                    recurEnum = Recur.YEARLY;
+                                    recurEnum = Recur.YEARLY;*/
 
                                 //String email = String.valueOf(emailET.getText());
                                 ZonedDateTime dateTimeEmail = dateTime;
@@ -364,7 +365,7 @@ public class TaskList extends AppCompatActivity {
                                 //String push = String.valueOf(pushET.getText());
                                 ZonedDateTime dateTimePush = dateTime;
 
-                                TaskClass mTask = new TaskClass(task, category, dateTime, recurEnum, dateTimeEmail, dateTimePush, false);
+                                TaskClass mTask = new TaskClass(task, category, dateTime, Recur.DAILY, dateTimeEmail, dateTimePush, false);
                                 mHelper.addTask(mTask);
                                 updateUI();
                             }
@@ -392,8 +393,7 @@ public class TaskList extends AppCompatActivity {
                         //changing completion status and removing from task list
                         View parent = (View) view.getParent();
                         TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
-                        ArrayList<TaskClass> tList = mHelper.getTaskList();
-                        TaskClass histTask;
+						/*ArrayList<TaskClass> tList = mHelper.getTaskList();                        TaskClass histTask;
                         String mTask = String.valueOf(taskTextView.getText());
                         for(int i = 0; i < tList.size(); i++) {
                             if(mTask == tList.get(i).getName()) {
@@ -404,7 +404,7 @@ public class TaskList extends AppCompatActivity {
                             }
                             else
                                 continue;
-                        }
+                        }*/
                         String task = String.valueOf(taskTextView.getText());
                         SQLiteDatabase db = mHelper.getWritableDatabase();
                         db.delete(DBHelper.TASK_TABLE,

@@ -16,7 +16,7 @@
         android:theme="@style/Theme.SimpleSchedulerProject" >
         <activity
             android:name=".AddCategoryActivity"
-            android:label="Add New Task">
+            android:label="Add New Category">
         </activity>
         <activity
             android:name=".ProfileActivity"
