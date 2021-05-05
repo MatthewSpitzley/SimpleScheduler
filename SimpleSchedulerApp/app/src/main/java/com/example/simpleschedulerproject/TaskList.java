@@ -32,8 +32,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
+//import com.android.volley.RequestQueue;
+//import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 
 import java.text.DateFormat;
@@ -48,7 +48,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import okhttp3.OkHttpClient;
+//import okhttp3.OkHttpClient;
 
 public class TaskList extends AppCompatActivity {
     private static final String TAG = "TaskList";
@@ -56,8 +56,8 @@ public class TaskList extends AppCompatActivity {
     private ImageButton settingsBtn;
     private Button signInBtn, addTaskBtn;
     private DBHelper mHelper;
-    private RequestQueue mQueue;
-    private OkHttpClient client;
+    //private RequestQueue mQueue;
+    //private OkHttpClient client;
     private ListView mTaskList;
     private ArrayAdapter<String> mAdapter;
     private Settings settings;
@@ -341,7 +341,48 @@ public class TaskList extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    private AlertDialog AskOption(View view)
+    {
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
+                // set message, title, and icon
+                .setTitle("Complete")
+                .setMessage("Mark this task as complete?")
+                //.setIcon(R.drawable.delete)
+
+                .setPositiveButton("Complete", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //your deleting code
+                        View parent = (View) view.getParent();
+                        TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
+                        String task = String.valueOf(taskTextView.getText());
+                        SQLiteDatabase db = mHelper.getWritableDatabase();
+                        db.delete(DBHelper.TASK_TABLE,
+                                DBHelper.COLUMN_TASK_NAME + " = ?",
+                                new String[]{task});
+                        //mHelper.addTask()
+                        db.close();
+                        updateUI();
+                        dialog.dismiss();
+                    }
+
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+
+        return myQuittingDialogBox;
+    }
     public void deleteTask(View view) {
+        AlertDialog dialogCheck = AskOption(view);
+        dialogCheck.show();
+        updateUI();
+        /*
         View parent = (View) view.getParent();
         TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
         String task = String.valueOf(taskTextView.getText());
@@ -351,5 +392,7 @@ public class TaskList extends AppCompatActivity {
                 new String[]{task});
         db.close();
         updateUI();
+
+         */
     }
 }
